@@ -1,20 +1,15 @@
 import MaketDetailCard from '@/components/common/MarketDetailCard';
+import type { ShopListResponse, Shop } from '@/lib/types';
 
-const dummyCon = {
-  id: 0,
-  name: '롯데리아',
-  callNumber: '0',
-  address: '어디동 어디시',
-  categories: '',
-  img: '',
-};
+interface Props {
+  shopListData?: Shop[]
+}
 
-const dummy = new Array(10).fill(dummyCon);
-
-const MarketDetailList = () => {
+const MarketDetailList = ({shopListData}: Props) => {
+  console.log(shopListData)
   return (
     <div className="flex flex-col">
-      {dummy?.map((info, i) => <MaketDetailCard key={i} info={info} />)}
+      {shopListData?.map((info: Shop, i) => <MaketDetailCard key={i} info={info} />)}
     </div>
   );
 };

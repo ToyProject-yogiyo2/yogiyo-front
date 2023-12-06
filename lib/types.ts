@@ -92,3 +92,31 @@ export interface RegisterAddressRequest {
   longitude: number;
   latitude: number;
 }
+
+export interface ShopList {
+  category?: string;
+  sortOption?: string;
+  deliveryPrice?: number;
+  leastOrderPrice?: number;
+  longitude?: number;
+  latitude?: number;
+  offset?: number;
+  limit?: number;
+}
+
+export interface Shop {
+  shopId: number;
+  shopName: string;
+  totalScore: number;
+  distance: number;
+  deliveryTime: number;
+  minDeliveryPrice: number;
+  maxDeliveryPrice: number;
+  icon: string;
+}
+
+export interface ShopListResponse {
+  content: Shop[];
+  nextOffset: number;
+  hasNext: boolean;
+}

@@ -1,7 +1,12 @@
 import { AiFillStar } from 'react-icons/ai';
 import Link from 'next/link';
+import type { Shop } from '@/lib/types';
 
-const MaketDetailCard = (info: any) => {
+interface Props {
+  info: Shop
+}
+
+const MaketDetailCard = ({info}: Props) => {
   return (
     <Link
       href=""
@@ -14,16 +19,16 @@ const MaketDetailCard = (info: any) => {
         <div className="title_container flex justify-start gap-2 rounded-md">
           {/* 나중에 요기요 아이콘 찾으면 여기다 넣기 */}
           {/* <i>yogiyo_icon</i> */}
-          <p className="text-xl font-bold">{info.name || '가게 이름'}</p>
+          <p className="text-xl font-bold">{info.shopName}</p>
         </div>
         <div className="flex justify-start items-center gap-1">
           <AiFillStar fill="#FDC912" className="text-2xl" />
-          <p className="text-base font-bold">{info.rate || '5.0'}</p>
+          <p className="text-base font-bold">{info.totalScore.toFixed(1)}</p>
         </div>
         <div className="text-sm flex gap-2">
-          <p>{info.delay || '30~35분'}</p>
+          <p>{info.deliveryTime}분</p>
           <span>배달요금</span>
-          <p className="font-bold">{info.delFee || '3,000원'}</p>
+          <p className="font-bold">{info.maxDeliveryPrice}원</p>
         </div>
       </div>
     </Link>

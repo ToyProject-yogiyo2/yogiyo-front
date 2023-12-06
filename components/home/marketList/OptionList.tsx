@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { BsCheck } from 'react-icons/bs';
 import { RiArrowGoBackFill } from 'react-icons/ri';
+import { useRecoilState } from 'recoil';
+import { shopListOption } from '@/recoil/state';
 
 //menu 타입
 type MenuKey = 'sort' | 'delFilter' | 'orderAmount';
@@ -20,9 +22,7 @@ const menu = {
 
 const OptionList = () => {
   //메뉴 옵션 state
-  const [sortState, setSortState] = useState(menu.sort[0]);
-  const [delFilter, setDelFilter] = useState(menu.delFilter[0]);
-  const [orderAmount, setOrderAmount] = useState(menu.orderAmount[0]);
+  const [shopListOptionState, setShopListOption] = useRecoilState(shopListOption)
 
   //드롭다운 메뉴 토글
   const [toggleDropDown, setToggleDropDown] = useState(false);
@@ -41,9 +41,9 @@ const OptionList = () => {
   //토글될 드롭다운 메뉴 렌더링
   const dropDownMenu = (toggle: boolean, menu: any) => {
     const isSelected = (menuTarget: string, value: string) =>
-      (menuTarget === 'sort' && value === sortState) ||
-      (menuTarget === 'delFilter' && value === delFilter) ||
-      (menuTarget === 'orderAmount' && value === orderAmount);
+      (menuTarget === 'sort' && value === shopListOptionState.sortState) ||
+      (menuTarget === 'delFilter' && value === shopListOptionState.delFilter) ||
+      (menuTarget === 'orderAmount' && value === shopListOptionState.orderAmount);
 
     if (toggle) {
       return (
@@ -54,13 +54,13 @@ const OptionList = () => {
               onClick={() => {
                 switch (menu.target) {
                   case 'sort':
-                    setSortState(value);
+                    setShopListOption({...shopListOptionState, sortState: value});
                     break;
                   case 'delFilter':
-                    setDelFilter(value);
+                    setShopListOption({...shopListOptionState, delFilter: value});
                     break;
                   case 'orderAmount':
-                    setOrderAmount(value);
+                    setShopListOption({...shopListOptionState, orderAmount: value});
                 }
 
                 setToggleDropDown(false);
@@ -82,14 +82,16 @@ const OptionList = () => {
     <>
       <div className="w-full py-[10px] overflow-hidden sticky top-[90px] left-0 z-10">
         <div className="no-scroll top-0 left-0 overflow-x-auto h-[50px] flex px-[20px] items-center gap-4 text-sm absoulte bg-white">
-          {(sortState !== menu.sort[0] ||
-            delFilter !== menu.delFilter[0] ||
-            orderAmount !== menu.orderAmount[0]) && (
+          {(shopListOptionState.sortState !== menu.sort[0] ||
+            shopListOptionState.delFilter !== menu.delFilter[0] ||
+            shopListOptionState.orderAmount !== menu.orderAmount[0]) && (
             <div
               onClick={() => {
-                setSortState(menu.sort[0]),
-                  setDelFilter(menu.delFilter[0]),
-                  setOrderAmount(menu.orderAmount[0]);
+                setShopListOption({
+                  sortState: menu.sort[0],
+                  delFilter: menu.delFilter[0],
+                  orderAmount: menu.orderAmount[0]
+                })
               }}
               className={`px-[10px] py-[5px] border border-slate-800 rounded-2xl flex justify-center items-center gap-1 cursor-pointer whitespace-nowrap`}
             >
@@ -102,10 +104,10 @@ const OptionList = () => {
               setMenuDropDown('sort');
             }}
             className={`px-[10px] py-[5px] border border-slate-300 rounded-2xl flex justify-center items-center gap-1 cursor-pointer whitespace-nowrap 
-              ${sortState !== menu.sort[0] && `bg-slate-900 text-white`}
+              ${shopListOptionState.sortState !== menu.sort[0] && `bg-slate-900 text-white`}
             `}
           >
-            {sortState}
+            {shopListOptionState.sortState}
             {toggleDropDown && selectMenu.target === 'sort' ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </div>
           <div
@@ -113,10 +115,10 @@ const OptionList = () => {
               setMenuDropDown('delFilter');
             }}
             className={`px-[10px] py-[5px] border border-slate-300 rounded-2xl flex justify-center items-center gap-1 cursor-pointer whitespace-nowrap 
-            ${delFilter !== menu.delFilter[0] && `bg-slate-900 text-white`}
+            ${shopListOptionState.delFilter !== menu.delFilter[0] && `bg-slate-900 text-white`}
             `}
           >
-            {delFilter}
+            {shopListOptionState.delFilter}
             {toggleDropDown && selectMenu.target === 'delFilter' ? (
               <IoIosArrowUp />
             ) : (
@@ -128,10 +130,10 @@ const OptionList = () => {
               setMenuDropDown('orderAmount');
             }}
             className={`px-[10px] py-[5px] border border-slate-300 rounded-2xl flex justify-center items-center gap-1 cursor-pointer whitespace-nowrap 
-            ${orderAmount !== menu.orderAmount[0] && `bg-slate-900 text-white`}
+            ${shopListOptionState.orderAmount !== menu.orderAmount[0] && `bg-slate-900 text-white`}
             `}
           >
-            {orderAmount}
+            {shopListOptionState.orderAmount}
             {toggleDropDown && selectMenu.target === 'orderAmount' ? (
               <IoIosArrowUp />
             ) : (

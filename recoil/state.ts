@@ -82,3 +82,15 @@ export const userAddress = atom<RegisterAddressRequest[]>({
   key: 'userAddress',
   default: [],
 });
+
+//상점 조회 옵션
+export const shopListOption = atom({
+  key: 'shopListOption',
+  default: {
+    sortState: '주문 많은순',
+    delFilter: '배달요금',
+    orderAmount: '최소주문금액'
+  }
+})
+
+// 상점 리스트 조회 반환값

@@ -3,7 +3,7 @@ import type { RegisterAddressRequest } from '@/lib/types';
 
 //임시 엑세스토큰
 const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MzIxQGdtYWlsLmNvbSIsInByb3ZpZGVyVHlwZSI6IkRFRkFVTFQiLCJ1c2VyVHlwZSI6Ik1lbWJlciIsImV4cCI6MTcwMDYzMTgyMn0.kzk6cbqLRmANDS2LhtSqerEr4_LeUebaTRIt-Yz6FeU'
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MzIxQGdtYWlsLmNvbSIsInByb3ZpZGVyVHlwZSI6IkRFRkFVTFQiLCJ1c2VyVHlwZSI6Ik1lbWJlciIsImV4cCI6MTcwMTg1MzMyNH0.1ow3FpwwMbxYH29zFMbRxYj-15NQvvaPpkA5ZJjodoA'
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
