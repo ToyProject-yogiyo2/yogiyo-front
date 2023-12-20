@@ -1,12 +1,13 @@
 'use client';
 import { IoIosArrowDown } from 'react-icons/io';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   headerModalState,
   currentCoord,
   currentAddress,
   userAddress,
   thisAddressId,
+  userInfoAtom,
 } from '@/recoil/state';
 import AddressModal from './AddressModal';
 import { useState, useEffect } from 'react';
@@ -24,6 +25,7 @@ const Header = () => {
   const [curAdd, setCurAdd] = useRecoilState(currentAddress);
   const [thisAdd, setThisAdd] = useRecoilState(thisAddressId);
   const [memberAddress, setMemberAddress] = useRecoilState(userAddress);
+  const userInfo = useRecoilValue(userInfoAtom);
 
   //로그인 확인용
   const [isLogin, setIsLogin] = useState(false);
@@ -44,7 +46,7 @@ const Header = () => {
       );
     }
 
-    fetchAddress(setMemberAddress, setThisAdd);
+    fetchAddress(setMemberAddress, setThisAdd, userInfo);
   }, []);
 
   useEffect(() => {

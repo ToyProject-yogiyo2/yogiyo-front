@@ -4,15 +4,23 @@ import '/lib/styles.css';
 import '/lib/animations.css';
 import { Tab } from '@/lib/types';
 
-const ToggleMenu = (tab: Tab) => {
+const ToggleMenu = (props: Tab) => {
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedTab = e.target.value;
+    props.handleGetSelected(selectedTab);
+    setIsInitialLoad(false);
+  };
+
   //상태 잘 변하는지 테스트용
   useEffect(() => {
-    console.log(tab.name, tab.initialLoad, tabAnimation);
-  }, [tab]);
+    console.log('tab2 change!');
+  }, [props]);
 
-  const tabAnimation = tab.initialLoad
+  const tabAnimation = props.isInitialLoad
     ? 'left-0'
-    : tab.name === 'writeable'
+    : props.selectedTab === 'left'
     ? 'right-to-left'
     : 'left-to-right';
 
@@ -21,22 +29,22 @@ const ToggleMenu = (tab: Tab) => {
       <div className="bg-slate-200 w-full h-full rounded-xl border border-slate-300 flex text-center">
         <input
           type="radio"
-          id="writeable"
-          value="writeable"
+          id={props.tabData.left.id}
+          value="left"
           style={{ display: 'none' }}
-          checked={tab.name === 'writeable'}
-          onChange={tab.handle}
+          checked={props.selectedTab === 'left'}
+          onChange={handleTabChange}
         />
-        <label htmlFor="writeable" className="w-1/2 z-10 h-full relative">
+        <label htmlFor="writable" className="w-1/2 z-10 h-full relative">
           <p className="absolute transform-center w-full">작성 가능한 리뷰(0)</p>
         </label>
         <input
           type="radio"
-          id="written"
-          value="written"
+          id={props.tabData.right.id}
+          value="right"
           style={{ display: 'none' }}
-          checked={tab.name === 'written'}
-          onChange={tab.handle}
+          checked={props.selectedTab === 'right'}
+          onChange={handleTabChange}
         />
         <label htmlFor="written" className="w-1/2 z-10 h-full relative">
           <p className="absolute transform-center w-full">작성한 리뷰(0)</p>

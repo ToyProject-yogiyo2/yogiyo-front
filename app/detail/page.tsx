@@ -8,7 +8,7 @@ const Detail = () => {
       <DetailHeader />
       <HeadSlider />
       <MiddleTitle />
-      <div className='h-[1000px]'/>
+      <div className="h-[1000px]" />
     </div>
   );
 };

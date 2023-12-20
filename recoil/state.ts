@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import type { Coordinate, User, RegisterAddressRequest } from '@/lib/types';
+import type { Coordinate, UserInfo, RegisterAddressRequest } from '@/lib/types';
 
 //헤더모달 state
 export const headerModalState = atom({
@@ -62,12 +62,13 @@ export const isFindMapState = atom({
 });
 
 //로그인한 유저 정보
-export const userAtom = atom<User>({
+export const userInfoAtom = atom<UserInfo>({
   key: 'user',
   default: {
     id: 'unknown',
     nickname: 'unknown',
     email: 'unknown',
+    accessToken: null,
   },
 });
 
@@ -89,8 +90,8 @@ export const shopListOption = atom({
   default: {
     sortState: '주문 많은순',
     delFilter: '배달요금',
-    orderAmount: '최소주문금액'
-  }
-})
+    orderAmount: '최소주문금액',
+  },
+});
 
 // 상점 리스트 조회 반환값

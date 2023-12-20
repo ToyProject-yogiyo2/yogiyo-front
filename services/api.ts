@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-export const baseAxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
+import { baseAxiosInstance } from './apiConfig';
 
 /*
 export const getNaverAuth = async () => {

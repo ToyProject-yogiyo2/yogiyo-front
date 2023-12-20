@@ -11,7 +11,6 @@ const slideStyle = {
   background: '#888',
 };
 
-
 const HeadSlider = () => {
   const dummy = new Array(4).fill({});
   return (
@@ -35,7 +34,6 @@ const HeadSlider = () => {
           );
         })}
       </Swiper>
-
     </div>
   );
 };

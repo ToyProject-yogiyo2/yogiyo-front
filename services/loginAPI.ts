@@ -1,9 +1,5 @@
-import axios from 'axios';
 import { ReqAuth, SocialLogin } from '@/lib/types';
-
-export const baseAxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
+import { baseAxiosInstance } from './apiConfig';
 
 export const getNaverAuth = (req: ReqAuth) => {
   const baseURL = 'https://nid.naver.com/oauth2.0/authorize';
@@ -15,29 +11,38 @@ export const getKakaoAuth = async (req: ReqAuth) => {
   window.location.href = `${baseURL}?response_type=${req.code}&client_id=${req.client_id}&redirect_uri=${req.redirect_uri}`;
 };
 
+export const login = async (reqbody: SocialLogin) => {
+  try {
+    const resTokenApi = await getAccessToken(reqbody);
+    const { token, userId } = resTokenApi;
+    const resUserInfo = await getUserInfo(token);
+    return { ...resUserInfo, id: userId, accessToken: token };
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 export const getAccessToken = async (reqbody: SocialLogin) => {
   const headers = {
     'Content-Type': 'application/json',
   };
   const resTokenAPI = await baseAxiosInstance.post('/memberLogin', reqbody, { headers });
-  const accessToken = resTokenAPI.headers.authorization;
-  console.log(resTokenAPI);
-  console.log(accessToken);
+  const token = resTokenAPI.headers.authorization;
   const userId = resTokenAPI.data.userId;
-  console.log(userId);
-  const resUserInfo = await getUserInfo(accessToken);
-  console.log(resUserInfo);
-  //let userInfo = {...resUserInfo.data, id: userId};
-  //console.log(userInfo);
-  //return {accessToken, userInfo};
+  return { token, userId };
 };
 
 export const getUserInfo = async (token: string) => {
   const headers = {
-    //'Authorization' : token,
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsInByb3ZpZGVyVHlwZSI6IkRFRkFVTFQiLCJleHAiOjE2OTQ5NjY4Mjh9.Ls1wnxU41I99ijXRyKfkYI2w3kd-Q_qA2QgCLgpDTKk',
+    Authorization: token,
   };
   const res = await baseAxiosInstance.get('/member/mypage', { headers });
-  return res;
+  /*const res = await baseAxiosInstance.get('/member/mypage', {
+    headers: {
+      Authorization: token
+    }
+  })
+  */
+  console.log(res);
+  return res.data;
 };

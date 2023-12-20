@@ -22,7 +22,7 @@ const menu = {
 
 const OptionList = () => {
   //메뉴 옵션 state
-  const [shopListOptionState, setShopListOption] = useRecoilState(shopListOption)
+  const [shopListOptionState, setShopListOption] = useRecoilState(shopListOption);
 
   //드롭다운 메뉴 토글
   const [toggleDropDown, setToggleDropDown] = useState(false);
@@ -54,13 +54,13 @@ const OptionList = () => {
               onClick={() => {
                 switch (menu.target) {
                   case 'sort':
-                    setShopListOption({...shopListOptionState, sortState: value});
+                    setShopListOption({ ...shopListOptionState, sortState: value });
                     break;
                   case 'delFilter':
-                    setShopListOption({...shopListOptionState, delFilter: value});
+                    setShopListOption({ ...shopListOptionState, delFilter: value });
                     break;
                   case 'orderAmount':
-                    setShopListOption({...shopListOptionState, orderAmount: value});
+                    setShopListOption({ ...shopListOptionState, orderAmount: value });
                 }
 
                 setToggleDropDown(false);
@@ -90,8 +90,8 @@ const OptionList = () => {
                 setShopListOption({
                   sortState: menu.sort[0],
                   delFilter: menu.delFilter[0],
-                  orderAmount: menu.orderAmount[0]
-                })
+                  orderAmount: menu.orderAmount[0],
+                });
               }}
               className={`px-[10px] py-[5px] border border-slate-800 rounded-2xl flex justify-center items-center gap-1 cursor-pointer whitespace-nowrap`}
             >

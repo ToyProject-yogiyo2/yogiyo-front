@@ -1,6 +1,12 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const LoggedOut = () => {
+  const router = useRouter();
+  const handleLinkToLogin = () => {
+    router.push('/login');
+  };
+
   return (
     <div className="">
       <div className="w-full h-full text-center p-5">
@@ -8,7 +14,10 @@ const LoggedOut = () => {
         <p className="text-sm text-slate-600">로그인 후 매일 새로운 할인을 만나보세요.</p>
         <p className="text-sm text-slate-600">지금 가입하면 특별 추가 혜택까지!</p>
         <div className="flex justify-center mt-3 pb-5">
-          <button className="w-1/2 pt-4 pb-4 rounded-xl bg-yopink text-white">
+          <button
+            className="w-1/2 pt-4 pb-4 rounded-xl bg-yopink text-white"
+            onClick={handleLinkToLogin}
+          >
             로그인/회원가입
           </button>
         </div>

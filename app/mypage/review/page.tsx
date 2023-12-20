@@ -1,29 +1,49 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import TabMenu from '@/components/mypage/TabMenu';
+import TabMenu from '@/components/common/TabMenu';
 import ToggleMenu from '@/components/mypage/ToggleMenu';
 import { BsPencil } from 'react-icons/bs';
-import CardOrder from '@/components/mypage/CardOrder';
+import CardOrder from '@/components/common/CardOrder';
+
+const tabData1 = {
+  left: { id: 'deliveryAndTogo', name: '배달/포장' },
+  right: { id: 'yomart', name: '요마트' },
+};
+const tabData2 = {
+  left: { id: 'writable', name: '작성 가능한 리뷰' },
+  right: { id: 'written', name: '작성한 리뷰' },
+};
 
 const Review = () => {
-  const [tabName, setTabName] = useState('deliveryAndTogo');
-  const [tabName2, setTabName2] = useState('writeable');
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [tab1, setTab1] = useState('left');
+  const [tab2, setTab2] = useState('left');
 
-  const handleTab2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //useEffect[]에서 setInitialLoad(false)하려고 했는데 초기 렌더링이 2번 연속해서 되고 있어서 여기로 옮김
-    if (initialLoad) setInitialLoad(false);
-    setTabName2(e.target.value);
+  const handleGetTab2 = (selectedTab: string) => {
+    setTab2(selectedTab);
+    //if(isInitialLoad) setIsInitialLoad(false)
+    console.log('tab2 change');
+  };
+
+  const handleGetTab1 = (selectedTab: string) => {
+    setTab1(selectedTab);
+    //if(isInitialLoad) setIsInitialLoad(false)
+    console.log('tab1 change');
   };
 
   return (
     <div className="bg-yogrey">
-      <TabMenu></TabMenu>
+      <TabMenu
+        //isInitialLoad={isInitialLoad}
+        tabData={tabData1}
+        selectedTab={tab1}
+        handleGetSelected={handleGetTab1}
+      ></TabMenu>
       <div className="p-4 bg-white">
         <ToggleMenu
-          handle={handleTab2Change}
-          initialLoad={initialLoad}
-          name={tabName2}
+          //isInitialLoad={isInitialLoad}
+          tabData={tabData2}
+          selectedTab={tab2}
+          handleGetSelected={handleGetTab2}
         ></ToggleMenu>
       </div>
       <div className="p-4 flex">
@@ -34,11 +54,7 @@ const Review = () => {
           포토리뷰 작성시 <span className="text-yopink">100 포인트</span>를 드려요.
         </p>
       </div>
-      {tabName2 === 'writeable' ? (
-        <CardOrder name="writeable"></CardOrder>
-      ) : (
-        <CardOrder name="written"></CardOrder>
-      )}
+      {tab2 === 'left' ? <CardOrder type={0} /> : <CardOrder type={1} />}
     </div>
   );
 };

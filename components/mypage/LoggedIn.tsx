@@ -5,10 +5,10 @@ import { BiHeart } from 'react-icons/bi';
 import { BiGift } from 'react-icons/bi';
 import { BiMessageDots } from 'react-icons/bi';
 import { useRecoilState } from 'recoil';
-import { userAtom } from '@/recoil/state';
+import { userInfoAtom } from '@/recoil/state';
 
 const LoggedIn = () => {
-  const [user, setUser] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userInfoAtom);
 
   return (
     <div className="w-full p-5">

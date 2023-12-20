@@ -28,6 +28,12 @@ const ErrorPage = () => {
     case '001':
       message = '로그인에 실패했습니다.';
       break;
+    case '002':
+      message = '해당 페이지를 찾을 수 없습니다.';
+      break;
+    case '003':
+      message = '접근할 수 없는 페이지입니다.';
+      break;
   }
 
   return (
