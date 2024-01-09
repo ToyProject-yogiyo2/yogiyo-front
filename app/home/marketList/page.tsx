@@ -40,12 +40,12 @@ const MarketList = () => {
         requestInfo.deliveryPrice = optionConvert(shopListOptionState.delFilter) as number;
       if (shopListOptionState.orderAmount !== '최소주문금액')
         requestInfo.leastOrderPrice = optionConvert(shopListOptionState.orderAmount) as number;
-      // requestInfo.longitude = thisAddress.longitude;
-      // requestInfo.latitude = thisAddress.latitude;
+      requestInfo.longitude = thisAddress.longitude;
+      requestInfo.latitude = thisAddress.latitude;
 
       // 테스트용 좌표
-      requestInfo.longitude = 127.021577848223;
-      requestInfo.latitude = 37.560023342132;
+      // requestInfo.longitude = 127.021577848223;
+      // requestInfo.latitude = 37.560023342132;
 
       requestInfo.offset = offset;
       requestInfo.limit = 10;

@@ -29,9 +29,9 @@ const Loading = ({ params }: DynamicRoute) => {
           console.log("!!userInfo from login api(cookie ver)")
           console.log(resLogin);
           setUserInfo(resLogin);
-          if(typeof window !== 'undefined'){
-            sessionStorage.setItem('userId', resLogin.userId);
-          }
+          //if(typeof window !== 'undefined'){
+          //  sessionStorage.setItem('userId', resLogin.userId);
+          //}
           router.push('/');
         }else{
           throw new Error('200');

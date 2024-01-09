@@ -13,10 +13,12 @@ export const likeApi = {
   },
 
   //찜하기 목록 조회
-  async getLikeList(lastId: number) {
+  async getLikeList(offset: number, limit: number) {
     try {
       const response = await baseAxiosInstance.get(`/like/scroll`, {
-        params: { lastId },
+        params: {
+          offset, limit
+        },
         headers: {
           'Content-Type': 'application/json',
         },

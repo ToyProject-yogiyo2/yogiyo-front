@@ -1,21 +1,23 @@
 'use client';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import LoggedOut from '../../components/mypage/LoggedOut';
 import LoggedIn from '../../components/mypage/LoggedIn';
 import { userInfoAtom } from '@/recoil/state';
 import { useRecoilValue } from 'recoil';
 import Footer from '@/components/common/Footer';
+import { getUserInfo } from '@/services/loginAPI';
 
 const Mypage = () => {
-  const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
-  
+  //const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
+  const userInfo = useRecoilValue(userInfoAtom);
+
   //const userInfo = useRecoilValue(userInfoAtom);
   //console.log(`userInfoAtom.accessToken : ${userInfo.accessToken}`)
 
   //요기요 매거진~ 서비스 약관 부분은 하나하나의 버튼 ui가 딱히 다른곳에서 쓰이는것 같지 않아서 여기 직접 넣는걸로
   return (
     <div className="w-screen relative">
-      <div className="w-full">{!accessToken ? <LoggedOut /> : <LoggedIn />}</div>
+      <div className="w-full">{!userInfo.isLogin ? <LoggedOut /> : <LoggedIn />}</div>
       <div className="pt-5">
         <Menu text="요기요 매거진(베타)"></Menu>
         <MenuLine />

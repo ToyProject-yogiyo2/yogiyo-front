@@ -32,18 +32,22 @@ export const getCookie = async (reqbody: SocialLogin) => {
   };
   const config = {headers, withCredentials: true}
   const resTokenAPI = await baseAxiosInstance.post('/memberLogin', reqbody, { withCredentials: true });
+  
+  const isLogin = true;
   const userId = resTokenAPI.data.userId;
   const email = resTokenAPI.data.email;
-  const nickname = null;
 
-  return { userId, email, nickname };
+  const resUserInfoAPI = await getUserInfo()
+  const nickname = resUserInfoAPI.nickname;
+
+  return { userId, email, nickname, isLogin };
 };
 
-export const getUserInfo = async (token: string) => {
-  const headers = {
-    Authorization: token,
-  };
-  const res = await baseAxiosInstance.get('/member/mypage', { headers });
+export const getUserInfo = async () => {
+  //const headers = {
+  //  Authorization: token,
+  //};
+  const res = await baseAxiosInstance.get('/member/mypage', { withCredentials: true });
   /*const res = await baseAxiosInstance.get('/member/mypage', {
     headers: {
       Authorization: token
@@ -54,7 +58,7 @@ export const getUserInfo = async (token: string) => {
   return res.data;
 };
 
-/*
+
 export const logout = async (userId: number) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -63,4 +67,3 @@ export const logout = async (userId: number) => {
 
   const resLogout = await baseAxiosInstance.post(`/memberLogout/${userId}`,"",config)
 }
-*/

@@ -6,8 +6,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const MiddleTitle = () => {
-  const [tap, setTap] = useState(0);
-
   const listStyled = `
     text-slate-500
     font-bold
@@ -28,7 +26,7 @@ const MiddleTitle = () => {
           <p className='text-[1.1rem] text-red-800 font-bold'>237</p>
         </div>
       </div>
-      <div className="flex items-center gap-2 px-4">
+      <div className="flex items-center gap-2 px-4 border-b pb-2">
         <span className="text-[1.5rem] font-bold flex items-center gap-1">
           <FaStar color={'#FECE00'} />
           5.0
@@ -40,7 +38,7 @@ const MiddleTitle = () => {
         </div>
 
       </div>
-      <div className="pt-6">
+      {/* <div className="pt-6">
         <div className="flex justify-around pt-4 border-b">
           <span
             className={`h-full pb-4 px-8 tracking-[0.08rem] cursor-pointer ${
@@ -59,7 +57,7 @@ const MiddleTitle = () => {
             포장·20분
           </span>
         </div>
-      </div>
+      </div> */}
       <div className="p-4">
         <div className='flex mb-4'>
           <ul className='flex flex-col gap-2 w-full'>

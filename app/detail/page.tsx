@@ -1,6 +1,9 @@
 import DetailHeader from '@/components/detail/DetailHeader';
 import HeadSlider from '@/components/detail/HeadSlider';
 import MiddleTitle from '@/components/detail/MiddleTitle';
+import SignatureMenuTab from '@/components/detail/SignatureMenuTab';
+import DetailMenuList from '@/components/detail/DetailMenuList';
+import DetailTabMenu from '@/components/detail/DetailTabMenu';
 
 const Detail = () => {
   return (
@@ -8,7 +11,10 @@ const Detail = () => {
       <DetailHeader />
       <HeadSlider />
       <MiddleTitle />
-      <div className="h-[1000px]" />
+      <div className='border-y-[4px] border-slate-200 ' />
+      <DetailTabMenu />
+      <SignatureMenuTab />
+      <DetailMenuList />
     </div>
   );
 };

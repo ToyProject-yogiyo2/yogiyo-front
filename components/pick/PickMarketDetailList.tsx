@@ -1,4 +1,8 @@
+'use client'
+import { likeApi } from '@/services/likeApi';
 import MarketCard from './MarketCard';
+
+import { useEffect } from 'react';
 
 const dummyCon = {
   id: 0,
@@ -16,6 +20,10 @@ interface Props {
 const dummy = new Array(10).fill(dummyCon);
 
 const PickMarketDetailList = ({ pick }: Props) => {
+  useEffect(() => {
+    const result = likeApi.getLikeList(0, 5)
+    console.log(result)
+  },[])
   return (
     <div className="flex flex-col bg-white">
       {dummy?.map((info, i) => <MarketCard key={i} info={info} pick={pick} />)}

@@ -1,17 +1,3 @@
-/*
-  순서대로
-  가게이름, 별점, 가게이미지, 배달시간, 배달요금
-*/
-export interface MaketInfoType {
-  info: {
-    name?: string;
-    rate?: string;
-    img?: string;
-    delay?: string;
-    delFee?: string;
-  };
-}
-
 export interface Coordinate {
   lat: number;
   lng: number;
@@ -44,11 +30,11 @@ export interface InputBox {
 }
 
 export interface UserInfo {
-  userId: string;
+  userId: number;
   nickname: string | null; //서버에서 nickname null로 보내고 있어서 임시로!
   email: string;
   phone?: string;
-  authAt?: string;
+  isLogin?: boolean;
 }
 
 export interface Address {

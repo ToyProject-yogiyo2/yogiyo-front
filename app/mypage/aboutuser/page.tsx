@@ -6,6 +6,8 @@ import { useRecoilState } from 'recoil';
 import { userInfoAtom } from '@/recoil/state';
 import { useRouter } from 'next/navigation';
 
+import {logout} from '@/services/loginAPI';
+
 const AboutUser = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userInfoAtom);
@@ -28,9 +30,9 @@ const AboutUser = () => {
   };
   */
 
-  //const doLogout = () => {
-  //  const 
-  //}
+  const doLogout = async () => {
+    await logout(user.userId);
+  }
 
   return (
     <div className="">
@@ -84,7 +86,7 @@ const AboutUser = () => {
         </div>
       </div>
       <div className="p-4 flex justify-end text-yogrey4">
-        {/*<span onClick={doLogout}>로그아웃</span>*/}
+        <span onClick={doLogout}>로그아웃</span>
         <span className="pr-2 pl-2 text-sm">|</span>
         <span>회원탈퇴</span>
       </div>
