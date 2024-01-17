@@ -31,7 +31,7 @@ export interface InputBox {
 
 export interface UserInfo {
   userId: number;
-  nickname: string | null; //서버에서 nickname null로 보내고 있어서 임시로!
+  nickname: string; 
   email: string;
   phone?: string;
   isLogin?: boolean;

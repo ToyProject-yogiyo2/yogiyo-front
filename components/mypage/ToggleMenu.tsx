@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '/lib/styles.css';
 import '/lib/animations.css';
-import { Tab } from '@/lib/types';
+import { Tab } from '@/types/types';
 
 const ToggleMenu = (props: Tab) => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);

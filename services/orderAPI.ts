@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Order } from '@/lib/types';
+import { Order } from '@/types/types';
 
 export const baseAxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,

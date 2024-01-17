@@ -76,7 +76,7 @@ const DetailTabMenu = () => {
         // behavior: 'smooth',
       });
       sectionRefs.current[menu]?.scrollTo({
-        top: 
+        // top: 
       });
     }
   };

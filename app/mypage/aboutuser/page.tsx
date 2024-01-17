@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { userInfoAtom } from '@/recoil/state';
 import { useRouter } from 'next/navigation';
 
-import {logout} from '@/services/loginAPI';
+import { logout } from '@/services/loginAPI';
 
 const AboutUser = () => {
   const router = useRouter();
@@ -31,7 +31,11 @@ const AboutUser = () => {
   */
 
   const doLogout = async () => {
-    await logout(user.userId);
+    const res = await logout(user.userId);
+    console.log(res);
+
+    setUser(res);
+    router.push('/');
   }
 
   return (

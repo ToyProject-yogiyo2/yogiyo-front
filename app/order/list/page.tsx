@@ -1,7 +1,7 @@
 'use client';
 import TabMenu from '@/components/common/TabMenu';
 import React, { useState, useEffect } from 'react';
-import { OrderInfo } from '@/lib/types';
+import { OrderInfo } from '@/types/types';
 import { getOrderList } from '@/services/orderAPI';
 import Footer from '@/components/common/Footer';
 

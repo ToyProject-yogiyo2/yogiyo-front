@@ -1,4 +1,4 @@
-import type { RegisterAddressRequest } from '@/lib/types';
+import type { RegisterAddressRequest } from '@/types/types';
 import { baseAxiosInstance } from './apiConfig';
 
 export const addressApi = {

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import '/lib/animations.css';
-import { Tab } from '@/lib/types';
+import { Tab } from '@/types/types';
 
 const TabMenu = (props: Tab) => {
   //const [initialLoad, setInitialLoad] = useState(true);

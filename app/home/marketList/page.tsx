@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { shopListOption, thisAddressId } from '@/recoil/state';
 import { optionConvert } from '@/lib/optionConvert';
 import { useState, useEffect, useRef } from 'react';
-import type { Shop } from '@/lib/types';
+import type { Shop } from '@/types/types';
 
 const MarketList = () => {
   const searchParams = useSearchParams();

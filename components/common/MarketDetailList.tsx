@@ -1,5 +1,5 @@
 import MaketDetailCard from '@/components/common/MarketDetailCard';
-import type { ShopListResponse, Shop } from '@/lib/types';
+import type { ShopListResponse, Shop } from '@/types/types';
 
 interface Props {
   shopListData?: Shop[];

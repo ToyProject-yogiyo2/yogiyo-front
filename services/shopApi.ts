@@ -1,4 +1,4 @@
-import type { ShopList } from '@/lib/types';
+import type { ShopList } from '@/types/types';
 import { baseAxiosInstance } from './apiConfig';
 
 export const shopApi = {

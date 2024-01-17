@@ -1,5 +1,5 @@
 import { addressApi } from '@/services/addressApi';
-import type { UserInfo } from './types';
+import type { UserInfo } from '../types/types';
 
 //로그인한 유저의 주소 정보를 모두 불러온 후 recoil 상태에 저장함.
 export const fetchAddress = async (setMemberAddress: any, setThisAdd: any, userInfo: UserInfo) => {

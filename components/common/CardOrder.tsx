@@ -6,7 +6,7 @@ import { TbTruckDelivery, TbChevronDownLeft } from 'react-icons/tb';
 import { AiFillStar } from 'react-icons/ai';
 import { BsChevronDown } from 'react-icons/bs';
 import { BsChevronUp } from 'react-icons/bs';
-import { MenuOption } from '@/lib/types';
+import { MenuOption } from '@/types/types';
 
 interface Props {
   type: number;

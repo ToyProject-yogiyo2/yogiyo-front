@@ -4,7 +4,7 @@ import { nanum_Gothic } from '@/lib/font';
 import { useRecoilValue } from 'recoil';
 import { shopListOption, thisAddressId } from '@/recoil/state';
 import { useState, useEffect, useRef } from 'react';
-import type { Shop } from '@/lib/types';
+import type { Shop } from '@/types/types';
 
 const NewEateries = () => {
   const thisAddress = useRecoilValue(thisAddressId);

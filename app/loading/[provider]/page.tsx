@@ -1,6 +1,6 @@
 'use client';
 import { use, useEffect, useState } from 'react';
-import { DynamicRoute } from '@/lib/types';
+import { DynamicRoute } from '@/types/types';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getCookie } from '@/services/loginAPI';
 import { useRecoilState, useRecoilValue } from 'recoil';

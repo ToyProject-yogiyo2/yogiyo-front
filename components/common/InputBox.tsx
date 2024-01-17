@@ -1,4 +1,4 @@
-import { InputBox } from '@/lib/types';
+import { InputBox } from '@/types/types';
 
 const InputBox = (props: InputBox) => {
   return (

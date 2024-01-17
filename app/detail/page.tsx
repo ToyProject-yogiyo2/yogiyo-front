@@ -1,11 +1,15 @@
+'use client'
 import DetailHeader from '@/components/detail/DetailHeader';
 import HeadSlider from '@/components/detail/HeadSlider';
 import MiddleTitle from '@/components/detail/MiddleTitle';
 import SignatureMenuTab from '@/components/detail/SignatureMenuTab';
 import DetailMenuList from '@/components/detail/DetailMenuList';
 import DetailTabMenu from '@/components/detail/DetailTabMenu';
+import { useSearchParams } from 'next/navigation';
 
 const Detail = () => {
+  const searchParams = useSearchParams();
+  const shopId = searchParams.get('id');
   return (
     <div className="">
       <DetailHeader />

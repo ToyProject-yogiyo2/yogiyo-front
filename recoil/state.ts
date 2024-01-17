@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import type { Coordinate, UserInfo, RegisterAddressRequest } from '@/lib/types';
+import type { Coordinate, UserInfo, RegisterAddressRequest } from '@/types/types';
 
 //헤더모달 state
 export const headerModalState = atom({

@@ -38,6 +38,7 @@ const Login = () => {
       console.log('--getnaverauth--');
     } else if (provider === 'kakao') {
       getKakaoAuth(reqAuth.kakao);
+      console.log('--getkakaoauth--');
     }
   };
 

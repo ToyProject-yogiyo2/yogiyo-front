@@ -1,5 +1,5 @@
 import { AiFillStar } from 'react-icons/ai';
-import type { Shop } from '@/lib/types';
+import type { Shop } from '@/types/types';
 import Link from 'next/link';
 
 interface Props {
@@ -25,7 +25,15 @@ const basicStyled = {
 const MarketInfoCard = ({ shop }: Props) => {
   console.log(shop);
   return (
-    <Link href={''} className="w-[170px] h-[300px] flex flex-col gap-1">
+    <Link
+      href={{
+        pathname: 'detail',
+        query: {
+          id: shop.shopId,
+        },
+      }}
+      className="w-[170px] h-[300px] flex flex-col gap-1"
+    >
       <div className="img_container w-full h-[170px] flex justify-center items-center overflow-hidden rounded-xl">
         {shop.icon ? (
           <div className="w-full h-full" style={iconStyled(shop.icon)} />
@@ -43,7 +51,7 @@ const MarketInfoCard = ({ shop }: Props) => {
         <p className="text-base font-bold">{shop.totalScore.toFixed(1) || '5.0'}</p>
       </div>
       <div className="text-sm">
-        <p>{shop.deliveryTime}분</p>
+        <p>{shop.deliveryTime || 0}분</p>
       </div>
       <div className="text-sm flex items-center gap-2">
         <span>배달요금</span>

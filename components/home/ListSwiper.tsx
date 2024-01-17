@@ -5,7 +5,7 @@ import 'swiper/css';
 import MarketInfoCard from '../common/MaketInfoCard';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import type { Shop, RegisterAddressRequest } from '@/lib/types';
+import type { Shop, RegisterAddressRequest } from '@/types/types';
 import { shopApi } from '@/services/shopApi';
 
 interface ListSwiperProps {
@@ -28,6 +28,7 @@ const lastArrowStyle = {
 };
 
 const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperProps) => {
+  console.log(thisAddress)
   const [loading, setLoading] = useState(false);
 
   //무한스크롤 offset
@@ -46,10 +47,10 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
         sortOption: 'ORDER',
         deliveryPrice: 3000,
         orderAmount: 15000,
-        // longitude: thisAddress.longitude ? thisAddress.longitude : 127.021577848223,
-        longitude: 127.021577848223,
-        // latitude: thisAddress.latitude ? thisAddress.latitude : 37.560023342132,
-        latitude: 37.560023342132,
+        longitude: thisAddress?.longitude ? thisAddress.longitude : 127.021577848223,
+        // longitude: 127.021577848223,
+        latitude: thisAddress?.latitude ? thisAddress.latitude : 37.560023342132,
+        // latitude: 37.560023342132,
         offset: offset,
         limit: 5,
       };
