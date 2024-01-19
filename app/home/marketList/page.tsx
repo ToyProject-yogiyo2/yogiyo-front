@@ -26,7 +26,7 @@ const MarketList = () => {
   const [shopListData, setShopListData] = useState<Shop[]>([]);
 
   //무한스크롤 cursor (collumn값)
-  const [cursor, setCursor] = useState(1);
+  const [cursor, setCursor] = useState(0);
 
   //무한스크롤 subCursor (음식점id)
   const [subCursor, setSubCursor] = useState(0)
@@ -59,9 +59,14 @@ const MarketList = () => {
       // 테스트용 좌표
       // requestInfo.longitude = 127.021577848223;
       // requestInfo.latitude = 37.560023342132;
+      if(cursor) {
+        requestInfo.cursor = cursor;
+      }
 
-      requestInfo.cursor = cursor;
-      requestInfo.subCursor = subCursor;
+      if(subCursor) {
+        requestInfo.subCursor = subCursor;
+      }
+
       requestInfo.size = 10;
       requestInfo.code = thisAddress?.code || regionCode
 
@@ -69,7 +74,7 @@ const MarketList = () => {
       console.log(requestInfo);
 
       //다음 데이터가 있을 경우
-      if (response.hasNext) {
+      if (response?.hasNext) {
         setCursor(response.nextCursor);
         setSubCursor(response.nextSubCursor);
       }
@@ -104,7 +109,7 @@ const MarketList = () => {
   // 카테고리 변경 혹은 옵션 변경할 경우 상점리스트 및 무한스크롤 세팅 초기화
   useEffect(() => {
     setShopListData([]);
-    setCursor(1);
+    setCursor(0);
     setSubCursor(0);
     setLimit(false);
   }, [menu, shopListOptionState]);

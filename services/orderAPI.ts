@@ -15,11 +15,8 @@ export const getOrderDetail = async (id: string) => {
   return res.data;
 };
 
-export const postOrder = async (token: string, bill: any) => {
-  const headers = {
-    Authorization: token,
-  };
-  const res = await baseAxiosInstance.post(`/order/create`, bill, { headers });
+export const postOrder = async (bill: any) => {
+  const res = await baseAxiosInstance.post(`/order/create`, bill, { withCredentials: true });
   console.log(res);
 };
 

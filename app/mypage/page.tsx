@@ -11,10 +11,15 @@ const Mypage = () => {
   //const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
   const userInfo = useRecoilValue(userInfoAtom);
 
-  //const userInfo = useRecoilValue(userInfoAtom);
-  //console.log(`userInfoAtom.accessToken : ${userInfo.accessToken}`)
+  console.log(`=====================================`);
+  console.log(`[test] mypage 진입, 현재 userinfo atom : `);
+  console.log(userInfo);
+  console.log(`=====================================`);
+  //문제(240118):
+  //로그인 후, 페이지를 오랫동안 방치한 후에 mypage로 접근 시 logout 상태인 것으로 인식하여
+  //LoggedOut 컴포넌트를 렌더링, 로그인 폼이 표출되는데 거기서 로그인을 하면 에러 발생
+  //페이지를 새로고침하여 다시 로그인 폼으로 접근하면 로그인 정상작동
 
-  //요기요 매거진~ 서비스 약관 부분은 하나하나의 버튼 ui가 딱히 다른곳에서 쓰이는것 같지 않아서 여기 직접 넣는걸로
   return (
     <div className="w-screen relative">
       <div className="w-full">{!userInfo.isLogin ? <LoggedOut /> : <LoggedIn />}</div>

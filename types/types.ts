@@ -214,3 +214,16 @@ export interface Order {
   deliveryPrice: number; //ex 1000,
   totalPaymentPrice: number; //ex 21000
 }
+
+export interface requestInfoType {
+  category: string,
+  sortOption: string,
+  deliveryPrice: number,
+  leastOrderPrice: number,
+  longitude: number | undefined,
+  latitude: number | undefined,
+  size: number,
+  code: number | null,
+  cursor?: number,
+  subCursor?: number
+}

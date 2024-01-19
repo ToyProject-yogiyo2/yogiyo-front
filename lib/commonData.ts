@@ -1,6 +1,5 @@
 export const gridIconList = [
   '전체',
-  '할인가게',
   '치킨',
   '중국집',
   '버거',

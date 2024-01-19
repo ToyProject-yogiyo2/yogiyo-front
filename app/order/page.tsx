@@ -6,7 +6,7 @@ import { userInfoAtom } from '@/recoil/state';
 const Order = () => {
   //const user = useRecoilValue(userInfoAtom);
   //const token = user.accessToken;
-  const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
+  //const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
 
   const bill = {
     shopId: 1,
@@ -39,7 +39,7 @@ const Order = () => {
   }
 
   const handleGetOrder = () => {
-    postOrder(token as string, bill);
+    postOrder(bill);
   };
 
   return (

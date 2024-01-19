@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { OrderInfo } from '@/types/types';
 import { getOrderList } from '@/services/orderAPI';
 import Footer from '@/components/common/Footer';
+import { useRouter } from 'next/navigation';
 
 const tabData = {
   left: { id: 'deliveryAndTogo', name: '배달/포장' },
@@ -78,6 +79,14 @@ const OrderList = () => {
 export default OrderList;
 
 const SlideOrderList = ({ orderList }: Props) => {
+  const router = useRouter();
+
+  const handleClickOrder= () => {
+    router.push('/order')
+  }
+  const handleClickLinkOrderList = () => {
+    router.push('/')
+  }
   return (
     <div className="pl-4 pr-4 pb-4 bg-white">
       <div className="pt-3 pb-3 font-semibold">내가 주문한 맛집</div>
@@ -93,6 +102,8 @@ const SlideOrderList = ({ orderList }: Props) => {
             );
           })}
           <div className="w-[240px] h-[80px]">더 보기</div>
+          <div className="w-[240px] h-[80px]" onClick={handleClickOrder}>(임시:주문하기)</div>
+          <div className="w-[240px] h-[80px]" onClick={handleClickLinkOrderList}>(임시:홈으로)</div>
         </div>
       </div>
     </div>

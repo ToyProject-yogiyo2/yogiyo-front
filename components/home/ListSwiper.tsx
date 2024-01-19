@@ -1,14 +1,16 @@
 'use client';
 import { IoIosArrowForward } from 'react-icons/io';
+import Link from 'next/link';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import MarketInfoCard from '../common/MaketInfoCard';
-import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import type { Shop, RegisterAddressRequest } from '@/types/types';
 import { shopApi } from '@/services/shopApi';
 import { useRecoilValue } from 'recoil';
 import { currentCoord, currentRegionCode } from '@/recoil/state';
+import type { requestInfoType } from '@/types/types';
 
 interface ListSwiperProps {
   thisAddress: RegisterAddressRequest;
@@ -37,7 +39,7 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
   const curCoord = useRecoilValue(currentCoord)
 
   //무한스크롤 cursor (collumn값)
-  const [cursor, setCursor] = useState(1);
+  const [cursor, setCursor] = useState(0);
 
   //무한스크롤 subCursor (음식점id)
   const [subCursor, setSubCursor] = useState(0)
@@ -50,21 +52,26 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
 
   const getShopList = async (cursor: number, subCursor: number) => {
     try {
-      const requestInfo = {
+      const requestInfo: requestInfoType = {
         category: '신규맛집',
         sortOption: 'ORDER',
         deliveryPrice: 3000,
         leastOrderPrice: 15000,
-        longitude: thisAddress?.longitude ? thisAddress.longitude : curCoord?.lng,
-        latitude: thisAddress?.latitude ? thisAddress.latitude : curCoord?.lat,
+        longitude: thisAddress?.longitude || curCoord?.lng,
+        latitude: thisAddress?.latitude || curCoord?.lat,
         // longitude: 127.021577848223,
         // latitude: 37.560023342132,
-        cursor: cursor,
-        subCursor: subCursor,
         size: 5,
-        code: regionCode
+        code: thisAddress?.code || regionCode
         // code: 1171010200
       };
+      if(cursor){
+        requestInfo.cursor = cursor
+      }
+
+      if(subCursor){
+        requestInfo.subCursor = subCursor
+      }
 
       const response = await shopApi.fetchShopList(requestInfo);
       console.log(requestInfo);
@@ -98,8 +105,8 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
         } else { 
           setLimit(false);
         }
-      } else {
-        // data가 없을 경우
+      } else if(!thisAddress && (!regionCode && !curCoord)) {
+        // 비로그인 시 데이터가 없을 경우
         setLimit(true)
       }
     } catch (error) {
@@ -108,8 +115,12 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
       setLoading(false);
     }
   };
+  console.log(regionCode)
 
   useEffect(() => {
+    // if (!regionCode) {
+    //   return; 
+    // }
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -130,7 +141,7 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
     return () => {
       observer.disconnect();
     };
-  }, [cursor, subCursor, limit, loading]);
+  }, [cursor, subCursor, limit, curCoord, currentRegionCode, loading]);
 
   return (
     <>
