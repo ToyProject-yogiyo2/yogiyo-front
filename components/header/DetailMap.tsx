@@ -20,6 +20,7 @@ import { BsBagDash } from 'react-icons/bs';
 import { FiMapPin } from 'react-icons/fi';
 import { addressApi } from '@/services/addressApi';
 import { fetchAddress } from '@/lib/fetchAddress';
+import { locationRegionCode } from '@/lib/locationRegionCode';
 
 export const mapIconStyle = {
   position: 'absolute',
@@ -43,6 +44,9 @@ const DetailMap = () => {
   //검색 좌표 및 주소
   const coord = useRecoilValue(searchCoord);
   const address = useRecoilValue(searchAddress);
+
+  //검색 법정동 코드
+  const [regionCode, setRegionCode] = useState(0)
 
   //현재 좌표 및 주소
   const setCurCoord = useSetRecoilState(currentCoord);
@@ -70,6 +74,7 @@ const DetailMap = () => {
     const { kakao } = window;
     kakao.maps?.load(() => {
       let container = document.getElementById('map');
+      const geocoder = new kakao.maps.services.Geocoder();
 
       let options = {
         center: new kakao.maps.LatLng(coord.lat, coord.lng),
@@ -77,6 +82,16 @@ const DetailMap = () => {
       };
 
       let map = new kakao.maps.StaticMap(container, options);
+      const callback = (result: any, status: any) => {
+        if (status === kakao.maps.services.Status.OK) {
+    
+          console.log('지역 명칭 : ' + result[0].address_name);
+          console.log('행정구역 코드 : ' + result[0].code);
+          setRegionCode(result[0].code)
+        }
+      };
+      
+      geocoder.coord2RegionCode(coord.lng, coord.lat, callback);
     });
   }, [coord]);
 
@@ -101,6 +116,7 @@ const DetailMap = () => {
           isAddressName !== 'HOME' && isAddressName !== 'COMPANY' ? 'ELSE' : isAddressName,
         longitude: coord?.lng || 0,
         latitude: coord?.lat || 0,
+        code: regionCode
       });
 
       await fetchAddress(setMemberAddress, setThisAdd, userInfo);

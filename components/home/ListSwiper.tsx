@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import type { Shop, RegisterAddressRequest } from '@/types/types';
 import { shopApi } from '@/services/shopApi';
+import { useRecoilValue } from 'recoil';
+import { currentCoord, currentRegionCode } from '@/recoil/state';
 
 interface ListSwiperProps {
   thisAddress: RegisterAddressRequest;
@@ -31,8 +33,14 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
   console.log(thisAddress)
   const [loading, setLoading] = useState(false);
 
-  //무한스크롤 offset
-  const [offset, setOffset] = useState(0);
+  const regionCode = useRecoilValue(currentRegionCode)
+  const curCoord = useRecoilValue(currentCoord)
+
+  //무한스크롤 cursor (collumn값)
+  const [cursor, setCursor] = useState(1);
+
+  //무한스크롤 subCursor (음식점id)
+  const [subCursor, setSubCursor] = useState(0)
 
   //감시 타겟 ref
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -40,19 +48,22 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
   //무한스크롤 종료 state
   const [limit, setLimit] = useState(false);
 
-  const getShopList = async (offset: number) => {
+  const getShopList = async (cursor: number, subCursor: number) => {
     try {
       const requestInfo = {
         category: '신규맛집',
         sortOption: 'ORDER',
         deliveryPrice: 3000,
-        orderAmount: 15000,
-        longitude: thisAddress?.longitude ? thisAddress.longitude : 127.021577848223,
+        leastOrderPrice: 15000,
+        longitude: thisAddress?.longitude ? thisAddress.longitude : curCoord?.lng,
+        latitude: thisAddress?.latitude ? thisAddress.latitude : curCoord?.lat,
         // longitude: 127.021577848223,
-        latitude: thisAddress?.latitude ? thisAddress.latitude : 37.560023342132,
         // latitude: 37.560023342132,
-        offset: offset,
-        limit: 5,
+        cursor: cursor,
+        subCursor: subCursor,
+        size: 5,
+        code: regionCode
+        // code: 1171010200
       };
 
       const response = await shopApi.fetchShopList(requestInfo);
@@ -60,7 +71,8 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
 
       //다음 오프셋이 있을 경우
       if (response?.hasNext) {
-        setOffset(response.nextOffset);
+        setCursor(response.nextCursor);
+        setSubCursor(response.nextSubCursor);
       }
 
       return response;
@@ -73,16 +85,17 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
     if (loading || limit) return; // 로딩 중이거나 limit 상태일 경우 함수 실행 방지
     setLoading(true);
     try {
-      const data = await getShopList(offset);
+      const data = await getShopList(cursor, subCursor);
       console.log(data);
       if (data && data.content) {
         setShopListData((prev) => [...prev, ...data.content]);
-        setOffset(data.nextOffset);
+        setCursor(data.nextCursor);
+        setSubCursor(data.nextSubCursor);
 
         // 데이터가 더 이상 없을 경우 limit 상태를 true로 설정
         if (!data.hasNext) {
           setLimit(true);
-        } else {
+        } else { 
           setLimit(false);
         }
       } else {
@@ -117,7 +130,7 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
     return () => {
       observer.disconnect();
     };
-  }, [offset, limit, loading]);
+  }, [cursor, subCursor, limit, loading]);
 
   return (
     <>

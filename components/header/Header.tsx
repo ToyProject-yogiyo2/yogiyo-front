@@ -8,10 +8,12 @@ import {
   userAddress,
   thisAddressId,
   userInfoAtom,
+  currentRegionCode,
 } from '@/recoil/state';
 import AddressModal from './AddressModal';
 import { useState, useEffect } from 'react';
 import { fetchAddress } from '@/lib/fetchAddress';
+import { locationRegionCode } from '@/lib/locationRegionCode';
 
 declare global {
   interface Window {
@@ -22,6 +24,7 @@ declare global {
 const Header = () => {
   const [isModal, setIsModal] = useRecoilState(headerModalState);
   const [curCoord, setCurCoord] = useRecoilState(currentCoord);
+  const [regionCode, setRegionCode] = useRecoilState(currentRegionCode);
   const [curAdd, setCurAdd] = useRecoilState(currentAddress);
   const [thisAdd, setThisAdd] = useRecoilState(thisAddressId);
   const [memberAddress, setMemberAddress] = useRecoilState(userAddress);
@@ -73,6 +76,16 @@ const Header = () => {
             setCurAdd(detailAddress);
           }
         });
+        const callback = (result: any, status: any) => {
+          if (status === kakao.maps.services.Status.OK) {
+      
+            console.log('지역 명칭 : ' + result[0].address_name);
+            console.log('행정구역 코드 : ' + result[0].code);
+            setRegionCode(result[0].code)
+          }
+        };
+        
+        geocoder.coord2RegionCode(curCoord.lng, curCoord.lat, callback);
       });
     };
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI);

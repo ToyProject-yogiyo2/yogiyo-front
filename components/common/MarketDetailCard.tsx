@@ -26,7 +26,7 @@ const MaketDetailCard = ({ shop }: Props) => {
   return (
     <Link
       href={{
-        pathname: 'detail',
+        pathname: '/detail',
         query: {
           id: shop.shopId,
         },

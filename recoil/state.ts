@@ -19,6 +19,12 @@ export const currentAddress = atom<string | any>({
   default: '',
 });
 
+//현재위치 법정동 코드
+export const currentRegionCode = atom<number | null>({
+  key: 'currentRegionCode',
+  default: null,
+})
+
 //검색위치
 export const searchCoord = atom<Coordinate | null>({
   key: 'searchCoord',
@@ -42,6 +48,7 @@ export const thisAddressId = atom<RegisterAddressRequest>({
       detail: '',
     },
     here: false,
+    code: 0,
     addressType: '',
     nickname: '',
     longitude: 0,

@@ -5,7 +5,7 @@ import OptionList from '@/components/home/marketList/OptionList';
 import { useSearchParams } from 'next/navigation';
 import { shopApi } from '@/services/shopApi';
 import { useRecoilValue } from 'recoil';
-import { shopListOption, thisAddressId } from '@/recoil/state';
+import { currentCoord, currentRegionCode, shopListOption, thisAddressId } from '@/recoil/state';
 import { optionConvert } from '@/lib/optionConvert';
 import { useState, useEffect, useRef } from 'react';
 import type { Shop } from '@/types/types';
@@ -14,11 +14,22 @@ const MarketList = () => {
   const searchParams = useSearchParams();
   const menu = searchParams.get('menu');
   const shopListOptionState = useRecoilValue(shopListOption);
+
+  //로그인 유저 주소정보
   const thisAddress = useRecoilValue(thisAddressId);
+
+  //현재위치기준 법정동코드
+  const regionCode = useRecoilValue(currentRegionCode)
+
+  //비로그인 포함 gps기준 좌표정보
+  const curCoord = useRecoilValue(currentCoord)
   const [shopListData, setShopListData] = useState<Shop[]>([]);
 
-  //무한스크롤 offset
-  const [offset, setOffset] = useState(0);
+  //무한스크롤 cursor (collumn값)
+  const [cursor, setCursor] = useState(1);
+
+  //무한스크롤 subCursor (음식점id)
+  const [subCursor, setSubCursor] = useState(0)
 
   //감시 타겟 ref
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -26,7 +37,7 @@ const MarketList = () => {
   //무한스크롤 종료 state
   const [limit, setLimit] = useState(false);
 
-  const getShopList = async (offset: number) => {
+  const getShopList = async (cursor: number, subCursor: number) => {
     try {
       // 초기 빈 객체 생성
       const requestInfo: { [key: string]: any } = {};
@@ -40,22 +51,27 @@ const MarketList = () => {
         requestInfo.deliveryPrice = optionConvert(shopListOptionState.delFilter) as number;
       if (shopListOptionState.orderAmount !== '최소주문금액')
         requestInfo.leastOrderPrice = optionConvert(shopListOptionState.orderAmount) as number;
-      requestInfo.longitude = thisAddress.longitude;
-      requestInfo.latitude = thisAddress.latitude;
+
+      //로그인 시 & 비로그인 시 
+      requestInfo.longitude = thisAddress?.longitude || curCoord?.lng;
+      requestInfo.latitude = thisAddress?.latitude || curCoord?.lat;
 
       // 테스트용 좌표
       // requestInfo.longitude = 127.021577848223;
       // requestInfo.latitude = 37.560023342132;
 
-      requestInfo.offset = offset;
-      requestInfo.limit = 10;
+      requestInfo.cursor = cursor;
+      requestInfo.subCursor = subCursor;
+      requestInfo.size = 10;
+      requestInfo.code = thisAddress?.code || regionCode
 
       const response = await shopApi.fetchShopList(requestInfo);
       console.log(requestInfo);
 
-      //다음 오프셋이 있을 경우
+      //다음 데이터가 있을 경우
       if (response.hasNext) {
-        setOffset(response.nextOffset);
+        setCursor(response.nextCursor);
+        setSubCursor(response.nextSubCursor);
       }
 
       return response;
@@ -66,11 +82,12 @@ const MarketList = () => {
 
   const fetchData = async () => {
     try {
-      const data = await getShopList(offset);
+      const data = await getShopList(cursor, subCursor);
       console.log(data);
       if (data && data.content) {
         setShopListData((prev) => [...prev, ...data.content]);
-        setOffset(data.nextOffset);
+        setCursor(data.nextCursor);
+        setSubCursor(data.nextSubCursor);
 
         // 데이터가 더 이상 없을 경우 limit 상태를 true로 설정
         if (!data.hasNext) {
@@ -87,7 +104,8 @@ const MarketList = () => {
   // 카테고리 변경 혹은 옵션 변경할 경우 상점리스트 및 무한스크롤 세팅 초기화
   useEffect(() => {
     setShopListData([]);
-    setOffset(0);
+    setCursor(1);
+    setSubCursor(0);
     setLimit(false);
   }, [menu, shopListOptionState]);
 
@@ -112,7 +130,7 @@ const MarketList = () => {
     return () => {
       observer.disconnect();
     };
-  }, [menu, offset, shopListData, shopListOptionState, limit]);
+  }, [menu, cursor, subCursor, shopListData, shopListOptionState, limit]);
 
   return (
     <div className="w-full">

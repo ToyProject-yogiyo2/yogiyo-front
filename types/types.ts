@@ -51,6 +51,7 @@ export interface RegisterAddressRequest {
   addressType: string;
   longitude: number;
   latitude: number;
+  code: number;
 }
 
 export interface SocialLogin {

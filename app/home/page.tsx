@@ -3,7 +3,7 @@ import MyOrderedEateries from '@/components/home/MyOrderedEateries';
 import NewEateries from '@/components/home/NewEateries';
 import SearchBarLink from '@/components/home/SearchBarLink';
 
-const Home = () => {
+const Homes = () => {
   return (
     <div className="flex flex-col w-full">
       <SearchBarLink />
@@ -16,4 +16,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Homes;
