@@ -5,6 +5,8 @@ import { OrderInfo } from '@/types/types';
 import { getOrderList } from '@/services/orderAPI';
 import Footer from '@/components/common/Footer';
 import { useRouter } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from '@/recoil/state';
 
 const tabData = {
   left: { id: 'deliveryAndTogo', name: '배달/포장' },
@@ -15,19 +17,25 @@ interface Props {
   orderList: OrderInfo[];
 }
 
-/**
- *
- * @todo SlideOrderList, CardOrdered 의 map에 있는 key를 id값으로 수정하던가 해야함.. name은 유니크하지 않음.
- */
 const OrderList = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [tab, setTab] = useState(tabData.left.id);
-  const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
+  //const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
 
   const [lastIdState, setLastIdState] = useState(null);
   const [hasNextState, setHasNextState] = useState(true);
   const [list, setList] = useState<any[]>([]);
   const [isBottom, setIsBottom] = useState(false);
+
+  const userInfo = useRecoilValue(userInfoAtom);
+  const router = useRouter();
+
+  if(!userInfo.isLogin){
+    console.log("로그인 상태가 아닙니다.")
+    router.push('/mypage');
+  }else{
+    console.log(`${userInfo.nickname} 의 주문내역`);
+  }
 
   const handleGetSelected = (selectedTab: string) => {
     setTab(selectedTab);
@@ -53,7 +61,7 @@ const OrderList = () => {
   },[list]);
 
   const dataFetch = async () => {
-    const { orderHistories, lastId, hasNext } = await getOrderList(token as string, lastIdState);
+    const { orderHistories, lastId, hasNext } = await getOrderList(lastIdState);
 
     setLastIdState(lastId);
     setHasNextState(hasNext);
