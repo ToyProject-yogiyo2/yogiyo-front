@@ -1,8 +1,5 @@
 'use client'
-import { likeApi } from '@/services/likeApi';
 import MarketCard from './MarketCard';
-
-import { useEffect } from 'react';
 
 const dummyCon = {
   id: 0,
@@ -13,20 +10,18 @@ const dummyCon = {
   img: '',
 };
 
+
+
 interface Props {
-  pick?: boolean;
+  pickList?: {}[];
 }
 
 const dummy = new Array(10).fill(dummyCon);
 
-const PickMarketDetailList = ({ pick }: Props) => {
-  useEffect(() => {
-    const result = likeApi.getLikeList(0, 5)
-    console.log(result)
-  },[])
+const PickMarketDetailList = ({ pickList }: Props) => {
   return (
     <div className="flex flex-col bg-white">
-      {dummy?.map((info, i) => <MarketCard key={i} info={info} pick={pick} />)}
+      {pickList?.map((info, i) => <MarketCard key={i} info={info}/>)}
     </div>
   );
 };

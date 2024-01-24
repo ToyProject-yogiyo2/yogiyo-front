@@ -11,6 +11,7 @@ export const shopApi = {
         },
         params,
       });
+      console.log(response)
       return response.data;
     } catch (error) {
       console.error(error);
