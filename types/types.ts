@@ -227,3 +227,11 @@ export interface requestInfoType {
   cursor?: number,
   subCursor?: number
 }
+
+export interface shopInfoType {
+  id: number,
+  name: string,
+  callNumber: string,
+  address: string,
+  categories: string[]
+}

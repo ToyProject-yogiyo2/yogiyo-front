@@ -21,10 +21,11 @@ const DetailTabMenu = () => {
           const foundMenu = Object.keys(sectionRefs.current).find(menu => sectionRefs.current[menu] === entry.target);
           if (foundMenu) {
             setActiveMenu(foundMenu);
+            handleGrandchild(null, foundMenu)
           }
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.9 });
 
     // 섹션을 observer에 등록
     Object.values(sectionRefs.current).forEach(section => {
@@ -43,7 +44,7 @@ const DetailTabMenu = () => {
         });
       }
     };
-  }, [activeMenu])
+  }, [])
 
 
   const handleGrandchild = (event: React.MouseEvent<HTMLDivElement> | null, menu: string) => {
@@ -56,16 +57,15 @@ const DetailTabMenu = () => {
         grandchildRect = event.currentTarget.getBoundingClientRect();
         parentRect = parentRef.current.getBoundingClientRect();
       } else {
-        // const grandchild = Array.from(childRef.current.children).find(
-        //   (child) => child.textContent === queryMenu,
-        // );
-        // if (grandchild) {
-        //   grandchildRect = grandchild.getBoundingClientRect();
-        //   parentRect = parentRef.current.getBoundingClientRect();
-        // }
+        // 스크롤로 메뉴 이동할 경우
+        grandchildRect = sectionRefs.current[menu].getBoundingClientRect();
+        parentRect = parentRef.current.getBoundingClientRect();
       }
 
       const childCurrentScroll = childRef.current.scrollLeft;
+
+      const tabHeader = sectionRefs.current[menu].offsetTop - 85
+      console.log(sectionRefs.current[menu].offsetTop)
 
       //메뉴를 화면 좌측으로 옮기기 위한 계산
       const scrollAmount = childCurrentScroll + grandchildRect.left - parentRect.left;
@@ -75,9 +75,15 @@ const DetailTabMenu = () => {
         left: scrollAmount,
         // behavior: 'smooth',
       });
-      sectionRefs.current[menu]?.scrollTo({
-        // top: 
-      });
+
+      window.scrollTo({
+        top: tabHeader,
+        // behavior: 'smooth'
+      })
+      // sectionRefs.current[menu]?.scrollIntoView({
+      //   // behavior: 'smooth',
+      //   block: 'start'
+      // });
     }
   };
 
@@ -97,7 +103,10 @@ const DetailTabMenu = () => {
               className={`flex text-[1rem] items-center whitespace-nowrap cursor-pointer font-bold ${
                 activeMenu === menu ? 'bg-black' : ''
               }`}
-              onClick={(e) => {handleGrandchild(e, menu)}}
+              onClick={(e) => {
+                handleGrandchild(e, menu)
+                console.log(menu)
+              }}
               key={i}
             >
               {menu}
@@ -116,14 +125,27 @@ const DetailTabMenu = () => {
         {
         dummyMenu.map((menu, i) => {
           return (
-            <>
-              <div ref={el => {
-                if (el) {
-                  sectionRefs.current[menu] = el;
-                }
-              }} />
-              <p key={i} className='h-[500px]'>{menu}</p>
-            </>
+            <div 
+              // className='relative'
+              key={i}>
+              {/* 감시 element */}
+              {/* <div 
+                className='absolute top-[50%] left-0'
+                ref={el => {
+                  if (el) {
+                    sectionRefs.current[menu] = el;
+                  }
+                }} 
+              /> */}
+              <p 
+                             ref={el => {
+                              if (el) {
+                                sectionRefs.current[menu] = el;
+                              }
+                            }} 
+                className='h-[500px]'
+              >{menu}</p>
+            </div>
 
           )
         })

@@ -2,19 +2,43 @@
 import { FaStar, FaHeart } from 'react-icons/fa';
 import { SlArrowRight } from 'react-icons/sl';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { shopApi } from '@/services/shopApi';
+import { useSearchParams } from 'next/navigation';
+import type { shopInfoType } from '@/types/types';
 
 const MiddleTitle = () => {
+  const searchParams = useSearchParams();
+  const shopId = searchParams.get('id');
+  const [shopInfo, setShopInfo] = useState<shopInfoType>()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await shopApi.getShopInfo(shopId);
+        console.log(result)
+        setShopInfo(result)
+      } catch (error) {
+        console.error('컴포넌트 내부 에러', error);
+      }
+    };
+  
+    fetchData();
+  }, [])
+
+
+  const [heart, setHeart] = useState(true);
+
   const listStyled = `
     text-slate-500
     font-bold
   `
+  
 
   return (
     <div className="">
       <div className="px-4 pt-4 relative">
-        <p className="text-[1.8rem] font-bold">가게이름</p>
+        <p className="text-[1.8rem] font-bold">{shopInfo?.name || '가게 이름'}</p>
         <div 
           className='absolute top-4 right-4'
           onClick={() => {}}

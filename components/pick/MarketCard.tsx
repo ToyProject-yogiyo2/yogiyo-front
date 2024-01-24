@@ -2,6 +2,7 @@
 import { AiFillStar, AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useState } from 'react';
 import Link from 'next/link';
+import { likeApi } from '@/services/likeApi';
 
 const MarketCard = ({ info }: any) => {
   const [heart, setHeart] = useState(true);
@@ -12,8 +13,9 @@ const MarketCard = ({ info }: any) => {
     fill: heart ? 'red' : 'black',
   };
 
-  const heartHandler = () => {
+  const heartHandler = (shopId: number) => {
     setHeart(!heart);
+    likeApi.toggleLike(shopId)
   };
 
   return (
@@ -42,9 +44,9 @@ const MarketCard = ({ info }: any) => {
         )} */}
         <>
           {heart ? (
-            <AiFillHeart style={heartStyle} onClick={heartHandler} />
+            <AiFillHeart style={heartStyle} onClick={() => heartHandler(info.shopId)} />
           ) : (
-            <AiOutlineHeart style={heartStyle} onClick={heartHandler} />
+            <AiOutlineHeart style={heartStyle} onClick={() => heartHandler(info.shopId)} />
           )}
         </>
       </div>

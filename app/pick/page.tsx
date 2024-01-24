@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Footer from '@/components/common/Footer';
 
 const Pick = () => {
-  const [pickList, setPickList] = useState([{},{}])
+  const [pickList, setPickList] = useState([])
   useEffect(() => {
     const fetchData = async () => {
       try {
