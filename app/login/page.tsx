@@ -48,6 +48,7 @@ const Login = () => {
   }
   const handleEmailLogin = () => {
     router.push('/login/emailLogin');
+    console.log("!!")
   }
 
   return(
