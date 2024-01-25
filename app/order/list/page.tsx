@@ -61,6 +61,9 @@ const OrderList = () => {
   },[list]);
 
   const dataFetch = async () => {
+    if(!lastIdState){
+      setLastIdState('9999999');
+    }
     const { orderHistories, lastId, hasNext } = await getOrderList(lastIdState);
 
     setLastIdState(lastId);
