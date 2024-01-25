@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import 'lib/styles.css';
 import { GoX } from 'react-icons/go';
