@@ -1,7 +1,7 @@
 import React from 'react';
 import 'lib/styles.css';
 import { GoX } from 'react-icons/go';
-import InputBox from '../common/InputBox';
+import InputBox from '../../../components/common/InputBox';
 
 const EmailJoin = () => {
   return (

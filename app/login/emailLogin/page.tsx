@@ -1,9 +1,16 @@
 import React from 'react';
 import 'lib/styles.css';
 import { GoX } from 'react-icons/go';
-import InputBox from '../common/InputBox';
+import InputBox from '../../../components/common/InputBox';
+import { useRouter } from 'next/navigation';
 
 const EmailLogin = () => {
+  const router = useRouter();
+
+  const handleEmailJoin = () => {
+    router.push('/login/emailJoin')
+  }
+
   return (
     <div>
       <div className="flex p-2">
@@ -18,7 +25,11 @@ const EmailLogin = () => {
         </div>
 
         <div className="pt-5 text-center text-sm text-yogrey5">
-          이메일 회원가입 | 이메일 찾기 | 비밀번호 찾기
+          <span onClick={handleEmailJoin}>이메일 회원가입</span>
+          <span className='p-2'>|</span>
+          <span>이메일 찾기</span>
+          <span className='p-2'>|</span>
+          <span>비밀번호 찾기</span>
         </div>
       </div>
     </div>

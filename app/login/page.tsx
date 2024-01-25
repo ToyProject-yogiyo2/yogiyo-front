@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import 'lib/styles.css';
 import PrevPageX from '@/components/common/PrevPageX';
-import EmailJoin from '@/components/login/emailJoin';
-import EmailLogin from '@/components/login/emailLogin';
+import EmailLogin from '@/app/login/emailLogin/page';
 import { getNaverAuth, getKakaoAuth } from '@/services/loginAPI';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
   const [view, setView] = useState(0);
 
   const yogiyoLogo = {
@@ -43,13 +44,13 @@ const Login = () => {
   };
 
   const handleEmailJoin = () => {
-    setView(1)
+    router.push('/login/emailJoin');
   }
   const handleEmailLogin = () => {
-    setView(2)
+    router.push('/login/emailLogin');
   }
 
-  return view === 0 ? (
+  return(
     <div className="w-full h-screen p-2 flex flex-col">
       <PrevPageX />
       <div className="w-full h-[50px] mt-10" style={yogiyoLogo} />
@@ -67,11 +68,7 @@ const Login = () => {
         <p className="font-semibold text-center">이메일로 회원가입</p>
       </div>
     </div>
-  ) : view === 1 ? (
-    <EmailJoin />
-  ) : (
-    <EmailLogin />
-  );
+  )
 };
 
 export default Login;
