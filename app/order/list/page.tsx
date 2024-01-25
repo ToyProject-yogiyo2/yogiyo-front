@@ -22,7 +22,7 @@ const OrderList = () => {
   const [tab, setTab] = useState(tabData.left.id);
   //const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
 
-  const [lastIdState, setLastIdState] = useState(null);
+  const [lastIdState, setLastIdState] = useState('9999999');
   const [hasNextState, setHasNextState] = useState(true);
   const [list, setList] = useState<any[]>([]);
   const [isBottom, setIsBottom] = useState(false);
