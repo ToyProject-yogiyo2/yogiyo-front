@@ -62,7 +62,7 @@ const Login = () => {
       <div className="w-full p-4 mt-3 rounded-xl bg-naver" onClick={handleAuth} id="naver">
         <p className="font-semibold text-white text-center">네이버로 로그인</p>
       </div>
-      <div className="w-full p-4 mt-3 rounded-xl bg-slate-200" onClick={handleEmailLogin}>
+      <div className="w-full p-4 mt-3 rounded-xl bg-slate-200">
         <p className="font-semibold text-center">이메일로 로그인</p>
       </div>
       <div className="w-full p-4 rounded-xl border border-slate-300 mt-auto" onClick={handleEmailJoin}>
