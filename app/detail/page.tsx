@@ -1,6 +1,6 @@
 'use client'
 import DetailHeader from '@/components/detail/DetailHeader';
-import HeadSlider from '@/components/detail/HeadSlider';
+import HeadSlider from '@/components/detail/MenuSlider';
 import MiddleTitle from '@/components/detail/MiddleTitle';
 import SignatureMenuTab from '@/components/detail/SignatureMenuTab';
 import DetailMenuList from '@/components/detail/DetailMenuList';
@@ -38,6 +38,7 @@ const Detail = () => {
           }
           // 로그인했을 경우
           if(userInfo.isLogin){
+            console.log(userInfo)
             param.code = thisAddId.code
             param.latitude = thisAddId.latitude
             param.longitude = thisAddId.longitude
@@ -59,9 +60,11 @@ const Detail = () => {
   }, [])
 
   const bannerStyle = {
-    background: `url(${shopInfo?.banner})`
+    backgroundImage: `url(${shopInfo?.banner})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center'
   }
-
 
   return (
     <div className="">
@@ -69,7 +72,7 @@ const Detail = () => {
       {/* <HeadSlider /> */}
       <div className={`w-full h-[200px]`} style={bannerStyle}/>
       <MiddleTitle shopInfo={shopInfo} />
-      <div className='border-y-[4px] border-slate-200 ' />
+      <div className='border-y-[4px] border-yogrey6' />
       <DetailTabMenu shopInfo={shopInfo} />
       <SignatureMenuTab />
       <DetailMenuList />

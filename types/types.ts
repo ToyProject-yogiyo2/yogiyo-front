@@ -231,14 +231,6 @@ export interface RequestInfoType {
   subCursor?: number
 }
 
-// export interface shopInfoType {
-//   id: number,
-//   name: string,
-//   callNumber: string,
-//   address: string,
-//   categories: string[]
-// }
-
 export interface ShopInfoType {
   id: number,
   name: string,

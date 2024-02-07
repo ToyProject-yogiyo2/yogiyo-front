@@ -20,7 +20,12 @@ const MarketCard = ({ info }: any) => {
 
   return (
     <div className="mt-[20px] ml-[20px] mr-[20px] pb-[20px] border-b border-slate-200 flex gap-4">
-      <Link href="" className="flex flex-1 gap-4">
+      <Link href={{
+        pathname: '/detail',
+        query: {
+          id: info.shopId
+        },
+      }} className="flex flex-1 gap-4">
         <div className="w-[90px] h-[90px] rounded-xl bg-slate-300">
           <img src={info.shopImg} />
         </div>
