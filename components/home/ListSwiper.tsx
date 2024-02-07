@@ -100,7 +100,7 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
         setSubCursor(data.nextSubCursor);
 
         // 데이터가 더 이상 없을 경우 limit 상태를 true로 설정
-        if (!data.hasNext) {
+        if (!data.hasNext || !data) {
           setLimit(true);
         } else { 
           setLimit(false);
