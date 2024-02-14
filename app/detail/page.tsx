@@ -72,7 +72,7 @@ const Detail = () => {
       {/* <HeadSlider /> */}
       <div className={`w-full h-[200px]`} style={bannerStyle}/>
       <MiddleTitle shopInfo={shopInfo} />
-      <div className='border-y-[4px] border-yogrey6' />
+      <div className='border-y-[4px] border-grey1' />
       <DetailTabMenu shopInfo={shopInfo} />
       <SignatureMenuTab />
       <DetailMenuList />

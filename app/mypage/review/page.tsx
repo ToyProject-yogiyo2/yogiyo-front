@@ -31,7 +31,7 @@ const Review = () => {
   };
 
   return (
-    <div className="bg-yogrey">
+    <div className="bg-grey1">
       <TabMenu
         //isInitialLoad={isInitialLoad}
         tabData={tabData1}
@@ -51,7 +51,7 @@ const Review = () => {
           <BsPencil />
         </p>
         <p className="font-sm font-semibold">
-          포토리뷰 작성시 <span className="text-yopink">100 포인트</span>를 드려요.
+          포토리뷰 작성시 <span className="text-pink1">100 포인트</span>를 드려요.
         </p>
       </div>
       {tab2 === 'left' ? <CardOrder type={0} /> : <CardOrder type={1} />}

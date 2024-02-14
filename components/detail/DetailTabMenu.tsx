@@ -180,7 +180,7 @@ const DetailTabMenu = ({shopInfo}: Props) => {
               <div 
                 key={i}
                 ref={el => {if(el) sectionRefs.current[menuGroup?.name] = el;}} 
-                className='bg-yogrey6 h-[300px] p-4'
+                className='bg-grey5 h-[300px] p-4'
               >
                 <p className='text-[1.3rem] font-bold py-2'>대표메뉴</p>
                 <MenuSlider menus={menuGroup.menus}/>
@@ -210,7 +210,7 @@ const DetailTabMenu = ({shopInfo}: Props) => {
                   </div>
                 ))}
               </div>
-              <div className='bg-yogrey6 h-2' />
+              <div className='bg-grey5 h-2' />
             </>
           )
         })}

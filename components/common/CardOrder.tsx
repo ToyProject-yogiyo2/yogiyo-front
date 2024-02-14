@@ -60,10 +60,10 @@ const CommonReviews = () => {
               <BiChevronRight />
             </span>
           </div>
-          <p className="text-[1rem] text-yogrey3 font-[400]">2023.8.29</p>
+          <p className="text-[1rem] text-grey3 font-[400]">2023.8.29</p>
         </div>
         <div className="w-1/2 relative">
-          <p className="absolute right-0 text-xs bg-yogrey rounded-md pt-1 pb-1 pr-2 pl-2 font-bold flex">
+          <p className="absolute right-0 text-xs bg-grey1 rounded-md pt-1 pb-1 pr-2 pl-2 font-bold flex">
             <span className="text-sm">
               <TbTruckDelivery />
             </span>
@@ -71,13 +71,13 @@ const CommonReviews = () => {
           </p>
         </div>
       </div>
-      <div className="w-full h-[2px] bg-yogrey mt-4 mb-4"></div>
+      <div className="w-full h-[2px] bg-grey1 mt-4 mb-4"></div>
     </div>
   );
 };
 const Writable = () => {
-  const imagebox = 'w-[70px] h-[70px] bg-yogrey rounded-md overflow-hidden';
-  const whiteButton = 'text-sm pt-2 pb-2 pr-4 pl-4 border border-yogrey2 rounded-md';
+  const imagebox = 'w-[70px] h-[70px] bg-grey1 rounded-md overflow-hidden';
+  const whiteButton = 'text-sm pt-2 pb-2 pr-4 pl-4 border border-grey2 rounded-md';
 
   return (
     <div className="flex pt-2 pb-2">
@@ -87,7 +87,7 @@ const Writable = () => {
           모짜렐라인더버거 어쩌구저쩌구 길면어쩌지
         </p>
         <p className="text-sm">
-          리뷰 작성 기간 <span className="bold text-yopink">15시간 남음</span>
+          리뷰 작성 기간 <span className="bold text-pink1">15시간 남음</span>
         </p>
       </div>
       <Link href="/">
@@ -103,9 +103,9 @@ const Written = () => {
     setIsDetailSpread(!isdetailSpread);
   };
 
-  const imageBox = 'w-[70px] h-[70px] bg-yogrey rounded-md overflow-hidden';
-  const whiteButton = 'text-sm pt-2 pb-2 pr-4 pl-4 border border-yogrey2 rounded-md';
-  const detailBox = `border-yogrey3 border w-full min-h-[50px] p-2 ${
+  const imageBox = 'w-[70px] h-[70px] bg-grey1 rounded-md overflow-hidden';
+  const whiteButton = 'text-sm pt-2 pb-2 pr-4 pl-4 border border-grey2 rounded-md';
+  const detailBox = `border-grey3 border w-full min-h-[50px] p-2 ${
     isdetailSpread ? '' : 'hidden'
   }`;
 
@@ -128,29 +128,29 @@ const Written = () => {
           <div className="flex">
             <span>맛</span>
             <AiFillStar fill="#FDC912" className="mt-[5px] pr-1 pl-1 w-auto" />
-            <span className="text-yoyellow pr-2">{count}</span>
+            <span className="text-yellow1 pr-2">{count}</span>
 
             <span>양 </span>
             <AiFillStar fill="#FDC912" className="mt-[5px] pr-1 pl-1 w-auto" />
-            <span className="text-yoyellow pr-2">{count}</span>
+            <span className="text-yellow1 pr-2">{count}</span>
 
             <span>배달 </span>
             <AiFillStar fill="#FDC912" className="mt-[5px] pr-1 pl-1 w-auto" />
-            <span className="text-yoyellow">{count}</span>
+            <span className="text-yellow1">{count}</span>
           </div>
         </div>
-        <div className="text-sm text-yogrey4">삭제</div>
+        <div className="text-sm text-grey4">삭제</div>
       </div>
       <div className="pt-2 pb-2 w-full">
-        <div className="h-[200px] bg-yogrey"></div>
+        <div className="h-[200px] bg-grey1"></div>
       </div>
       <div className="pt-2 pb-2 w-full">
         <div className="pb-1.5">언제 먹어도 맛있 어쩌구</div>
-        <div className="text-yogrey4 pb-2">고기듬뿍돼지김치찌개</div>
+        <div className="text-grey4 pb-2">고기듬뿍돼지김치찌개</div>
       </div>
       <div className="pt-2 pb-2 w-full">
         <div className="flex">
-          <label htmlFor="detail" className="pb-2 text-sm text-yogrey5">
+          <label htmlFor="detail" className="pb-2 text-sm text-grey5">
             주문 옵션 보기
           </label>
           <button id="detail" onClick={handleDetailSpread} className="pl-1 mb-[0.3rem] text-sm">
@@ -168,7 +168,7 @@ const Written = () => {
 
 const Obtion = (option: MenuOption) => {
   return (
-    <div className="flex text-yogrey4 text-sm">
+    <div className="flex text-grey4 text-sm">
       <TbChevronDownLeft className="pr-1 text-xl" />
       <p className="">{`${option.name} : ${option.content}`}</p>
     </div>

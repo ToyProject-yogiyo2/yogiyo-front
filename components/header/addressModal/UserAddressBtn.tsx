@@ -47,7 +47,7 @@ const UserAddressBtn = ({ addressTarget }: any) => {
           <span className="flex items-center gap-2 text-[1rem] font-bold">
             {addressTarget.nickname}
             {addressTarget.here && (
-              <span className="text-[0.8rem] text-yopink bg-red-100 p-[0.15rem] rounded-md">
+              <span className="text-[0.8rem] text-pink1 bg-red-100 p-[0.15rem] rounded-md">
                 요기
               </span>
             )}

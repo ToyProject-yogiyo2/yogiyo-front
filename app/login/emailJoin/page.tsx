@@ -28,7 +28,7 @@ const EmailJoin = () => {
 
   return (
     <div>
-      <div className="flex p-2 border-b border-yogrey2">
+      <div className="flex p-2 border-b border-grey2">
         <GoX className="text-[2.5rem]" />
         <div className="relative flex-1">
           <p className="absolute transform-center font-semibold">회원가입</p>
@@ -64,7 +64,7 @@ const EmailJoin = () => {
           value={nickname} 
           onChange={handleChange}
         />
-        <div className="w-full mt-5 p-3.5 rounded-xl bg-yogrey2">
+        <div className="w-full mt-5 p-3.5 rounded-xl bg-grey2">
           <p className="font-semibold w-full text-center text-white" onClick={handleEmailJoin}>다음</p>
         </div>
       </div>

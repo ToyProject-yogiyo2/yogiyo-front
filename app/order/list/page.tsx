@@ -74,7 +74,7 @@ const OrderList = () => {
   };
 
   return (
-    <div className="bg-yogrey h-screen">
+    <div className="bg-grey1 h-screen">
       <TabMenu
         tabData={tabData}
         isInitialLoad={isInitialLoad}
@@ -113,7 +113,7 @@ const SlideOrderList = ({ orderList }: Props) => {
             return(
             <div key={index} className="border rounded-2xl w-[240px] h-[80px] bg-white flex mr-2 overflow-hidden">
               <div className="w-[80px] p-[8px]">
-                <div className="w-full h-full rounded-[10px] bg-yogrey2"></div>
+                <div className="w-full h-full rounded-[10px] bg-grey2"></div>
               </div>
             </div>
             );
@@ -149,12 +149,12 @@ const CardOrdered = ({ orderList }: Props) => {
           return(
               <div key={index} className="mt-2 p-4 bg-white">
                 <div className="pb-4 flex flex-row text-center">
-                  <div className="w-[80px] text-xs font-semibold p-1 rounded-lg bg-yogrey">{order.orderType}</div>
-                  <div className="flex-1 text-left pl-2 text-sm text-yogrey3">{order.orderTime}</div>
-                  <div className="w-[80px] text-yogrey4 font-semibold">{order.status}</div>
+                  <div className="w-[80px] text-xs font-semibold p-1 rounded-lg bg-grey1">{order.orderType}</div>
+                  <div className="flex-1 text-left pl-2 text-sm text-grey3">{order.orderTime}</div>
+                  <div className="w-[80px] text-grey4 font-semibold">{order.status}</div>
                 </div>
                 <div className="flex h-[76px]">
-                  <div className="w-[76px] h-[76px] bg-yogrey2 rounded-xl"></div>
+                  <div className="w-[76px] h-[76px] bg-grey2 rounded-xl"></div>
                   <div className="flex-1 pl-4">
                     <div className="h-1/2 pb-2">
                       <p className="font-bold leading-5">{order.shopName}</p>
@@ -185,7 +185,7 @@ const CardOrdered = ({ orderList }: Props) => {
 
 const buttonStyles = {
   active:
-    'w-full h-full rounded-lg border text-sm font-semibold border-yopink text-yopink text-center',
+    'w-full h-full rounded-lg border text-sm font-semibold border-pink1 text-pink1 text-center',
   inactive:
-    'w-full h-full rounded-lg border text-sm font-semibold border-yogrey4 text-yogrey4 text-center',
+    'w-full h-full rounded-lg border text-sm font-semibold border-grey4 text-grey4 text-center',
 };
