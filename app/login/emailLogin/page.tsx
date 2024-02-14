@@ -12,6 +12,7 @@ const EmailLogin = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
+  const [usetData, setUserData] = useState()
 
   const handleEmailJoin = () => {
     router.push('/login/emailJoin')
