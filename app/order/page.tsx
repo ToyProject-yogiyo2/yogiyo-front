@@ -87,26 +87,26 @@ const Order = () => {
           <div>메뉴추가하기</div>
         </div>
       </div>
-      <div>
-        <p>주문요청사항</p>
-        <div>
+      <div className='rounded-lg border p-4 mt-4'>
+        <p className='font-bold'>주문요청사항</p>
+        <div className='flex pt-4 pb-4 border-b'>
           <div>checkbox</div>
           <div>
-            <p>문 앞에 놓고, 문자주세요.</p>
+            <p className='pl-2'>문 앞에 놓고, 문자주세요.</p>
           </div>
         </div>
-        <div>
+        <div className='flex pt-4 pb-4 border-b'>
           <div>checkbox</div>
-          <div>
+          <div className='pl-2'>
             <p>일회용 수저, 포크가 필요해요.</p>
-            <p>지구를 지키는 작은 실천!<span>현재까지 140회 참여</span></p>
+            <p className='text-green-600 text-sm'>지구를 지키는 작은 실천!<span>현재까지 140회 참여</span></p>
           </div>
         </div>
-        <div>
+        <div className='pt-4 text-grey4'>
           요청사항을 선택하세요
         </div>
       </div>
-      <div>
+      <div className='mt-4'>
         <div className='flex pt-[6px]'>
           <div>상품금액</div>
           <div className='ml-auto'>원</div>
@@ -120,7 +120,7 @@ const Order = () => {
           <div className='ml-auto'>원</div>
         </div>
       </div>
-      <div className='p-6 text-sm bg-grey8 text-grey5'>
+      <div className='p-6 text-sm bg-grey8 text-grey5 mt-2'>
         <p>개인정보 제3자 제공 내용 및 결제에 동의합니다.</p>
         <p>최소주문금액은 배달요금/일회용컵 보증금을 제외한 금액입니다.</p>
         <p>배달요금에는 할인수단이 적용되지 않습니다. (단, 배달요금 관련 할인/선물은 적용)</p>
