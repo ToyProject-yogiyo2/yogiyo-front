@@ -1,4 +1,5 @@
-import { searchCoord, searchAddress, isDetailMapState } from '@/recoil/state';
+import { isDetailMapState } from '@/recoil/modal';
+import { searchCoord, searchAddress } from '@/recoil/address';
 import { useSetRecoilState } from 'recoil';
 
 interface Props {

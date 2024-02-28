@@ -15,3 +15,8 @@
 | init     | 프로젝트 초기 생성                                    |
 | rename   | 파일 또는 폴더명 변경 또는 이동                       |
 | remove   | 파일 삭제 또는 관련 작업만 수행                       |
+
+
+## ✏️ color code
+
+<img width="393" alt="image" src="https://github.com/ToyProject-yogiyo2/yogiyo-front/assets/122634419/2fa05d2e-0963-4eed-a8d4-e6bd10c79af9">

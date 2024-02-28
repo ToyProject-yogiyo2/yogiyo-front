@@ -20,11 +20,7 @@ export const postOrder = async (bill: any) => {
   console.log(res);
 };
 
-export const getOrderList = async (token: string, lastId?: string | null) => {
-  //const headers = {
-    //Authorization: token,
-  //  withCredentials: true
-  //};
+export const getOrderList = async (lastId?: string) => {
   const queryString = lastId ? `lastId=${lastId}` : '';
   const res = await baseAxiosInstance.get(`/order/scroll?${queryString}`, { withCredentials: true });
   return res.data;

@@ -5,6 +5,8 @@ import { OrderInfo } from '@/types/types';
 import { getOrderList } from '@/services/orderAPI';
 import Footer from '@/components/common/Footer';
 import { useRouter } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from '@/recoil/state';
 
 const tabData = {
   left: { id: 'deliveryAndTogo', name: '배달/포장' },
@@ -15,19 +17,25 @@ interface Props {
   orderList: OrderInfo[];
 }
 
-/**
- *
- * @todo SlideOrderList, CardOrdered 의 map에 있는 key를 id값으로 수정하던가 해야함.. name은 유니크하지 않음.
- */
 const OrderList = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [tab, setTab] = useState(tabData.left.id);
-  const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
+  //const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
 
-  const [lastIdState, setLastIdState] = useState(null);
+  const [lastIdState, setLastIdState] = useState('9999999');
   const [hasNextState, setHasNextState] = useState(true);
   const [list, setList] = useState<any[]>([]);
   const [isBottom, setIsBottom] = useState(false);
+
+  const userInfo = useRecoilValue(userInfoAtom);
+  //const router = useRouter();
+
+  if(!userInfo.isLogin){
+    console.log("로그인 상태가 아닙니다.")
+    //router.push('/mypage');
+  }else{
+    console.log(`${userInfo.nickname} 의 주문내역`);
+  }
 
   const handleGetSelected = (selectedTab: string) => {
     setTab(selectedTab);
@@ -53,7 +61,10 @@ const OrderList = () => {
   },[list]);
 
   const dataFetch = async () => {
-    const { orderHistories, lastId, hasNext } = await getOrderList(token as string, lastIdState);
+    if(!lastIdState){
+      setLastIdState('9999999');
+    }
+    const { orderHistories, lastId, hasNext } = await getOrderList(lastIdState);
 
     setLastIdState(lastId);
     setHasNextState(hasNext);
@@ -63,7 +74,7 @@ const OrderList = () => {
   };
 
   return (
-    <div className="bg-yogrey h-screen">
+    <div className="bg-grey1 h-screen">
       <TabMenu
         tabData={tabData}
         isInitialLoad={isInitialLoad}
@@ -78,14 +89,20 @@ const OrderList = () => {
 
 export default OrderList;
 
+
+
+
+
+
+
 const SlideOrderList = ({ orderList }: Props) => {
-  const router = useRouter();
+  const router2 = useRouter();
 
   const handleClickOrder= () => {
-    router.push('/order')
+    router2.push('/order')
   }
   const handleClickLinkOrderList = () => {
-    router.push('/')
+    router2.push('/')
   }
   return (
     <div className="pl-4 pr-4 pb-4 bg-white">
@@ -96,7 +113,7 @@ const SlideOrderList = ({ orderList }: Props) => {
             return(
             <div key={index} className="border rounded-2xl w-[240px] h-[80px] bg-white flex mr-2 overflow-hidden">
               <div className="w-[80px] p-[8px]">
-                <div className="w-full h-full rounded-[10px] bg-yogrey2"></div>
+                <div className="w-full h-full rounded-[10px] bg-grey2"></div>
               </div>
             </div>
             );
@@ -109,6 +126,7 @@ const SlideOrderList = ({ orderList }: Props) => {
     </div>
   );
 };
+
 
 const CardOrdered = ({ orderList }: Props) => {
   //const orderStateMap = ['주문확인','조리중','배달중','배달완료'];
@@ -131,12 +149,12 @@ const CardOrdered = ({ orderList }: Props) => {
           return(
               <div key={index} className="mt-2 p-4 bg-white">
                 <div className="pb-4 flex flex-row text-center">
-                  <div className="w-[80px] text-xs font-semibold p-1 rounded-lg bg-yogrey">{order.orderType}</div>
-                  <div className="flex-1 text-left pl-2 text-sm text-yogrey3">{order.orderTime}</div>
-                  <div className="w-[80px] text-yogrey4 font-semibold">{order.status}</div>
+                  <div className="w-[80px] text-xs font-semibold p-1 rounded-lg bg-grey1">{order.orderType}</div>
+                  <div className="flex-1 text-left pl-2 text-sm text-grey3">{order.orderTime}</div>
+                  <div className="w-[80px] text-grey4 font-semibold">{order.status}</div>
                 </div>
                 <div className="flex h-[76px]">
-                  <div className="w-[76px] h-[76px] bg-yogrey2 rounded-xl"></div>
+                  <div className="w-[76px] h-[76px] bg-grey2 rounded-xl"></div>
                   <div className="flex-1 pl-4">
                     <div className="h-1/2 pb-2">
                       <p className="font-bold leading-5">{order.shopName}</p>
@@ -164,9 +182,10 @@ const CardOrdered = ({ orderList }: Props) => {
   );
 };
 
+
 const buttonStyles = {
   active:
-    'w-full h-full rounded-lg border text-sm font-semibold border-yopink text-yopink text-center',
+    'w-full h-full rounded-lg border text-sm font-semibold border-pink1 text-pink1 text-center',
   inactive:
-    'w-full h-full rounded-lg border text-sm font-semibold border-yogrey4 text-yogrey4 text-center',
+    'w-full h-full rounded-lg border text-sm font-semibold border-grey4 text-grey4 text-center',
 };

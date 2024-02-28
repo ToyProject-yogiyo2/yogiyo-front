@@ -1,12 +1,14 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import {
+  isDetailMapState,
+  isFindMapState,
+} from '@/recoil/modal';
+import {
   searchCoord,
   currentCoord,
   currentAddress,
-  isDetailMapState,
-  isFindMapState,
-} from '@/recoil/state';
+} from '@/recoil/address';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { GrUserManager } from 'react-icons/gr';
@@ -82,7 +84,7 @@ const FindMap = () => {
       <div className="flex flex-col gap-[10px] px-[20px]">
         <p className="font-[500] text-[1.2rem]">{address}</p>
         <span
-          className="cursor-pointer bg-yopink text-white font-black text-[1.2rem] rounded-xl p-[10px] text-center"
+          className="cursor-pointer bg-pink1 text-white font-black text-[1.2rem] rounded-xl p-[10px] text-center"
           onClick={() => {
             setIsDetail(true);
             setIsFindMap(false);

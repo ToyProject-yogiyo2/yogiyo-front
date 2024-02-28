@@ -31,7 +31,7 @@ export const getCookie = async (reqbody: SocialLogin) => {
     'Content-Type': 'application/json',
   };
   const config = {headers, withCredentials: true}
-  const resTokenAPI = await baseAxiosInstance.post('/memberLogin', reqbody, { withCredentials: true });
+  const resTokenAPI = await baseAxiosInstance.post('/member/login', reqbody, { withCredentials: true });
   
   const isLogin = true;
   const userId = resTokenAPI.data.userId;
@@ -65,7 +65,7 @@ export const logout = async (userId: number) => {
   };
   const config = {headers, withCredentials: true}
 
-  const resLogout = await baseAxiosInstance.post(`/memberLogout/${userId}`,"",config)
+  const resLogout = await baseAxiosInstance.post(`/member/logout/${userId}`,"",config)
   console.log(resLogout)
 
   const defaultUserInfo = {
@@ -77,4 +77,37 @@ export const logout = async (userId: number) => {
   }
 
   return defaultUserInfo;
+}
+
+
+export const emailLogin = async (email: string, password: string) => {
+  const userData = {
+    "email" : email,
+    "password" : password,
+    "authCode" : null,
+    "providerType" : "DEFAULT"
+  }
+  const resLogin = await baseAxiosInstance.post(`/member/login`, userData)
+  if (resLogin.status >= 200 && resLogin.status < 300) {
+    window.location.href = '/';
+    console.log(`유저 ${resLogin.data.userId} 로그인 성공`)
+  }else{
+    console.error('emailLogin api 호출 중 에러 발생')
+  }
+}
+
+export const emailJoin = async (email: string, password: string, nickname: string) => {
+  const userData = {
+    "nickname" : nickname,
+    "email" : email,
+    "password" : password,
+    "providerType" : "DEFAULT"
+  }
+  const resJoin = await baseAxiosInstance.post(`/member/join`, userData)
+  if (resJoin.status >= 200 && resJoin.status < 300) {
+    console.log(`유저 ${resJoin.data.id} 로그인 성공`)
+    window.location.href = '/';
+  }else{
+    console.error('emailJoin api 호출 중 에러 발생')
+  }
 }

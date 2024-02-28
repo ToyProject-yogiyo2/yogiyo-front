@@ -27,7 +27,7 @@ const TabMenu = (props: Tab) => {
     : 'underline-animation-to-right';
 
   return (
-    <div className="bg-yogrey">
+    <div className="bg-grey1">
       <div className="flex bg-white pl-4 pr-4">
         <div className="w-[50%]">
           <input

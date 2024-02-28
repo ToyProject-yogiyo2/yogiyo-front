@@ -29,7 +29,7 @@ const OrderDetail = () => {
   return (
     <>
       <PrevPageX />
-      <div className="w-[80px] text-yogrey4 font-semibold">배달완료</div>
+      <div className="w-[80px] text-grey4 font-semibold">배달완료</div>
     </>
   );
 };

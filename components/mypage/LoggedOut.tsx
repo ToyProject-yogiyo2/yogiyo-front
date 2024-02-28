@@ -15,14 +15,14 @@ const LoggedOut = () => {
         <p className="text-sm text-slate-600">지금 가입하면 특별 추가 혜택까지!</p>
         <div className="flex justify-center mt-3 pb-5">
           <button
-            className="w-1/2 pt-4 pb-4 rounded-xl bg-yopink text-white"
+            className="w-1/2 pt-4 pb-4 rounded-xl bg-pink1 text-white"
             onClick={handleLinkToLogin}
           >
             로그인/회원가입
           </button>
         </div>
       </div>
-      <div className="w-full h-[100px] bg-yogrey">광고</div>
+      <div className="w-full h-[100px] bg-grey1">광고</div>
     </div>
   );
 };

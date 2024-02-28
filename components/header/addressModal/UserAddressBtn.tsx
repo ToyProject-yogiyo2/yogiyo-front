@@ -1,7 +1,8 @@
 import { BiHomeAlt } from 'react-icons/bi';
 import { BsBagDash } from 'react-icons/bs';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { userAddress, headerModalState, thisAddressId, userInfoAtom } from '@/recoil/state';
+import { useSetRecoilState } from 'recoil';
+import { userAddress, thisAddressId } from '@/recoil/address';
+import { headerModalState } from '@/recoil/modal';
 import { addressApi } from '@/services/addressApi';
 import { fetchAddress } from '@/lib/fetchAddress';
 import { FiMapPin } from 'react-icons/fi';
@@ -10,8 +11,6 @@ const UserAddressBtn = ({ addressTarget }: any) => {
   const setMemberAddress = useSetRecoilState(userAddress);
   const setHeaderModal = useSetRecoilState(headerModalState);
   const setThisAdd = useSetRecoilState(thisAddressId);
-
-  const userInfo = useRecoilValue(userInfoAtom);
 
   const fullAddress = addressTarget.address.street + ' ' + addressTarget.address.detail;
 
@@ -40,7 +39,7 @@ const UserAddressBtn = ({ addressTarget }: any) => {
         className="flex flex-1 gap-2 cursor-pointer"
         onClick={async () => {
           await addressApi.change(addressTarget.id);
-          await fetchAddress(setMemberAddress, setThisAdd, userInfo);
+          await fetchAddress(setMemberAddress, setThisAdd);
           setHeaderModal(false);
         }}
       >
@@ -49,7 +48,7 @@ const UserAddressBtn = ({ addressTarget }: any) => {
           <span className="flex items-center gap-2 text-[1rem] font-bold">
             {addressTarget.nickname}
             {addressTarget.here && (
-              <span className="text-[0.8rem] text-yopink bg-red-100 p-[0.15rem] rounded-md">
+              <span className="text-[0.8rem] text-pink1 bg-red-100 p-[0.15rem] rounded-md">
                 요기
               </span>
             )}
@@ -64,7 +63,7 @@ const UserAddressBtn = ({ addressTarget }: any) => {
             const isConfirm = confirm(`${addressTarget.nickname} 주소를 삭제하시겠어요?`);
             if (isConfirm) {
               await addressApi.delete(addressTarget.id);
-              await fetchAddress(setMemberAddress, setThisAdd, userInfo);
+              await fetchAddress(setMemberAddress, setThisAdd);
             }
           }}
         >

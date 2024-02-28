@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { headerModalState, isDetailMapState, isFindMapState, userAddress } from '@/recoil/state';
+import { userAddress } from '@/recoil/address';
+import { headerModalState, isDetailMapState, isFindMapState } from '@/recoil/modal';
 import { FiSearch } from 'react-icons/fi';
 import { AiOutlineAim } from 'react-icons/ai';
 import { MdArrowBackIosNew } from 'react-icons/md';

@@ -44,7 +44,7 @@ const Loading = ({ params }: DynamicRoute) => {
   },[])
 
   return (
-    <div className="w-screen h-screen bg-yopink">
+    <div className="w-screen h-screen bg-pink1">
       <div>{`${params.provider} auth loading...`}</div>
     </div>
   );

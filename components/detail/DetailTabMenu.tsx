@@ -1,134 +1,296 @@
 'use client'
+import { shopApi } from '@/services/shopApi';
 import { useState, useRef, useEffect } from 'react';
+import type { ShopInfoType, MenuGroupType } from '@/types/types';
+import MenuSlider from './MenuSlider';
+import { RiArrowDownSLine } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { foodModalState } from '@/recoil/modal';
+import { addMenu } from '@/recoil/state';
 
-const DetailTabMenu = () => {
-  const dummyMenu = new Array(10).fill('').map((_, i) => i+'번 메뉴')
+interface Props {
+  shopInfo?: ShopInfoType
+}
+
+const menuImgStyle = (url: string) => {
+  if(!url){
+    return {
+    //   width: '27%',
+    //   background: '#eccece',
+    //   border: '1px solid #333',
+    //   borderRadius: '20px'
+      width: '0',
+      height: '0'
+    }
+  }
+  return {
+    width: '27%',
+    // height: '80%',
+    background: `url(${url}) no-repeat center center/cover`,
+    border: '1px solid #333',
+    borderRadius: '20px'
+  }
+}
+
+const DetailTabMenu = ({shopInfo}: Props) => {
+
+  // 테스트용 메뉴그룹 더미데이터
+  const dummyData = new Array(10).fill('').map((_, i) => {
+    return {
+      id: i+1,
+      name: i === 0 ? `대표메뉴` : `${i}번 메뉴그룹`,
+      content: '메뉴그룹 테스트',
+      menus: new Array(4).fill('').map((_, i) => {
+        return {
+          id: i+1,
+          name: `${i+1}번 메뉴`,
+          content: '메뉴 테스트',
+          price: 1000,
+          reviewNum: 100,
+          picture: '/images/yogiyo-logo.jpg'
+        }
+      })
+    }
+  });
+
+  //음식 상세페이지 모달 state
+  const [isModal, setIsModal] = useRecoilState(foodModalState);
+
+  //모달에 전달할 메뉴
+  const setAddMenu = useSetRecoilState(addMenu);
+
+  //실제 api로 받아올 메뉴그룹데이터
+  const [menuGroups, setMenuGroups] = useState<MenuGroupType[]>([]);
   
+  const totalRef = useRef<HTMLDivElement | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
   const childRef = useRef<HTMLDivElement | null>(null);
+  const grandChildRef = useRef<{ [key: string]: HTMLDivElement }>({});
 
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement }>({});
 
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const observer = useRef<IntersectionObserver | null>(null);
 
-  useEffect(() => {
-    // IntersectionObserver 인스턴스 생성
-    observer.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const foundMenu = Object.keys(sectionRefs.current).find(menu => sectionRefs.current[menu] === entry.target);
-          if (foundMenu) {
-            setActiveMenu(foundMenu);
-          }
-        }
-      });
-    }, { threshold: 0.1 });
-
-    // 섹션을 observer에 등록
-    Object.values(sectionRefs.current).forEach(section => {
-      if (section && observer.current) {
-        observer.current.observe(section); // observer.current가 null이 아닐 때만 observe 호출
-      }
-    });
-
-    // 컴포넌트 언마운트 시 observer 해제
-    return () => {
-      if (observer.current) {
-        Object.values(sectionRefs.current).forEach(section => {
-          if (section && observer.current) {
-            observer.current.unobserve(section);
-          }
-        });
-      }
-    };
-  }, [activeMenu])
-
-
-  const handleGrandchild = (event: React.MouseEvent<HTMLDivElement> | null, menu: string) => {
+  const handleGrandchildScroll = (menu: string) => {
     if (parentRef.current && childRef.current) {
       let grandchildRect: any;
       let parentRect: any;
 
-      //클릭이벤트로 메뉴 이동할 경우
-      if (event) {
-        grandchildRect = event.currentTarget.getBoundingClientRect();
-        parentRect = parentRef.current.getBoundingClientRect();
-      } else {
-        // const grandchild = Array.from(childRef.current.children).find(
-        //   (child) => child.textContent === queryMenu,
-        // );
-        // if (grandchild) {
-        //   grandchildRect = grandchild.getBoundingClientRect();
-        //   parentRect = parentRef.current.getBoundingClientRect();
-        // }
-      }
-
+      // 스크롤로 메뉴 이동할 경우
+      grandchildRect = grandChildRef.current[menu].getBoundingClientRect();
+      parentRect = parentRef.current.getBoundingClientRect();
+      
       const childCurrentScroll = childRef.current.scrollLeft;
 
       //메뉴를 화면 좌측으로 옮기기 위한 계산
-      const scrollAmount = childCurrentScroll + grandchildRect.left - parentRect.left;
-      // const menuScrollAmout =  window.scrollYOffset + rect.top - 80;
+      const scrollAmount = childCurrentScroll + grandchildRect.left - parentRect.left - 10;
 
       childRef.current.scrollTo({
         left: scrollAmount,
-        // behavior: 'smooth',
-      });
-      sectionRefs.current[menu]?.scrollTo({
-        // top: 
       });
     }
   };
 
+  const handleGrandchildClick = (menu: string) => {
+      const tabHeader = sectionRefs.current[menu].offsetTop - 85
+      window.scrollTo({
+        top: tabHeader,
+      })
+  };
+  
+  useEffect(() => {
+    //데이터 fetch
+    const fetchData = async () => {
+      if(shopInfo){
+        try {
+          const result = await shopApi.getShopMenuGroup(shopInfo?.id)
+          setMenuGroups(result.dummyData)
+          console.log(result)
+        } catch (error) {
+          console.error('컴포넌트 에러', error);
+        }
+      }
+    };
+    fetchData();
+  }, [shopInfo])
 
+  const [positions, setPositions] = useState<number[]>([]);
 
+  useEffect(() => {
+    //메뉴그룹 순회한 후 각 Ref의 위치값 저장
+    let positions: number[] = []
+    dummyData.forEach((menuGroup) => {
+      const name = menuGroup.name
+      const sectionScroll = sectionRefs.current[name].getBoundingClientRect().top;
+      positions.push(sectionScroll);
+    })
+    setPositions(positions);
+  }, [])
+
+  useEffect(() => {
+    // 쓰로틀링 구현
+    let timeoutId : NodeJS.Timeout | null = (null);
+
+    // 스크롤 이동 시 메뉴탭 이동 및 hover효과
+    const handleScroll = () => {
+      if(timeoutId === null){
+        timeoutId = setTimeout(() => {
+          const currentScrollPosition = window.scrollY + 150;
+          positions.forEach((_, i) => {
+            if(currentScrollPosition >= positions[i] && currentScrollPosition <= positions[i+1]){
+              setActiveMenu(dummyData[i].name);
+              handleGrandchildScroll(dummyData[i].name)
+            }else if(positions.length - 1 === i && currentScrollPosition >= positions[i]){
+              // 마지막 요소일 떄
+              setActiveMenu(dummyData[i].name);
+              handleGrandchildScroll(dummyData[i].name)
+            }
+          })
+          clearTimeout(timeoutId as NodeJS.Timeout);
+          timeoutId = null;
+        }, 100);
+      }
+    };
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [positions])
+
+  const [isFullMenu, setIsFullMenu] = useState(false);
+  const handleFullMenu = () => {
+    const offsetTop = totalRef.current?.offsetTop as number - 60
+    if(window.scrollY < offsetTop){
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      })
+    }
+
+    console.log(offsetTop)
+    setIsFullMenu(!isFullMenu)
+  }
 
   return (
-    // 탭메뉴 영역
-    <div className='p-2'>
-      <div ref={parentRef} className="w-full sticky top-[50px] left-0 overflow-hidden z-10">
+    <div className='' ref={totalRef}>
+      {/* 탭메뉴 영역 */}
+      {!isFullMenu && <div ref={parentRef} className="w-full sticky top-[50px] left-0 overflow-hidden z-10 border-y-[1px] py-[8px] pr-[50px] bg-white">
         <div
           ref={childRef}
           className="no-scroll top-0 left-0 overflow-x-auto h-[30px] flex px-[20px] items-center gap-4 text-sm absoulte bg-white"
         >
-          {dummyMenu.map((menu, i) => (
+          {dummyData?.map((menuGroup, i) => (
             <p
-              className={`flex text-[1rem] items-center whitespace-nowrap cursor-pointer font-bold ${
-                activeMenu === menu ? 'bg-black' : ''
+              ref={el => {if(el) grandChildRef.current[menuGroup?.name] = el;}} 
+              className={`flex text-[1rem] items-center whitespace-nowrap cursor-pointer p-[5px] ${
+                activeMenu === menuGroup?.name ? 'bg-black text-white rounded-3xl font-bold' : ''
               }`}
-              onClick={(e) => {handleGrandchild(e, menu)}}
+              onClick={() => {
+                handleGrandchildClick(menuGroup?.name)
+                console.log(menuGroup?.name)
+              }}
               key={i}
             >
-              {menu}
+              {menuGroup?.name}
             </p>
           ))}
+          {/* 전체메뉴 누르는 버튼 */}
+          <div
+            className='absolute right-0 top-0 w-[50px] h-full bg-white flex justify-center items-center'
+            // onClick={() => setIsFullMenu(!isFullMenu)}
+            onClick={() => handleFullMenu()}
+          >
+            <div className='absolute w-[1px] h-[60%] top-[10px] left-[2px] bg-slate-200 cursor-pointer'/>
+            <RiArrowDownSLine style={{fontSize: '2rem'}}/>
+          </div>
         </div>
-      </div>
-
-      {/* 대표메뉴 영역 */}
-      <div>
-        대표메뉴에용
-      </div>
+      </div>}
+      
+      {/* 풀 메뉴 영역 */}
+      {isFullMenu && <div className='fixed top-[50px] left-0 z-20 w-full' style={{height: '100vh'}}>
+        <p className='bg-grey9 flex justify-between w-full font-bold text-[1.2rem] p-[10px]'>
+          카테고리 전체보기
+          <IoMdClose 
+            style={{fontSize: '1.5rem'}}
+            onClick={() => setIsFullMenu(!isFullMenu)}
+          />
+        </p>
+        <div className='flex flex-wrap gap-3 bg-grey9 p-[10px] pb-[20px]'>
+        {dummyData?.map((menuGroup, i) => (
+          <span 
+            key={i}
+            className={`p-[7px] rounded-3xl 
+              ${activeMenu === menuGroup?.name ? 'bg-black text-white font-bold' : 'bg-white text-black'} 
+            `}
+            onClick={() => {
+              handleGrandchildClick(menuGroup?.name)
+              setIsFullMenu(!isFullMenu)
+            }}
+          >{menuGroup.name}</span>
+        ))}
+        </div>
+        <div 
+          onClick={() => setIsFullMenu(!isFullMenu)}
+          className='p-[10px] h-full boder-b bg-black opacity-60' 
+        />
+      </div>}
 
       {/* 메뉴 리스트 영역 */}
       <div>
-        {
-        dummyMenu.map((menu, i) => {
+        {dummyData.map((menuGroup, i) => {
+          // 대표메뉴일 경우
+          if(i === 0){
+            return (
+              <div 
+                key={i}
+                ref={el => {if(el) sectionRefs.current[menuGroup?.name] = el;}} 
+                className='bg-grey9 h-[300px] p-4 relative'
+              >
+                <div
+                  className='absolute top-[0%] left-[50%]'
+                />
+                <p className='text-[1.3rem] font-bold py-2'>대표메뉴</p>
+                <MenuSlider menus={menuGroup.menus} shopId={shopInfo?.id}/>
+              </div>
+            )
+          }
           return (
             <>
-              <div ref={el => {
-                if (el) {
-                  sectionRefs.current[menu] = el;
-                }
-              }} />
-              <p key={i} className='h-[500px]'>{menu}</p>
+              <div 
+                key={i}
+                ref={el => {if(el) sectionRefs.current[menuGroup?.name] = el;}} 
+                className='px-4 py-6 relative'
+              >
+                <div
+                  className='absolute top-[0%] left-[50%]'
+                />
+                <p className='text-[1.3rem] font-bold pt-2 pb-6'>{menuGroup?.name}</p>
+                {menuGroup.menus?.map((menu, i) => (
+                  <div 
+                    key={i}
+                    className='flex gap-4 py-[20px] border-b'
+                    onClick={() => {
+                      setIsModal(true);
+                      setAddMenu(menu);
+                    }}
+                  >
+                    <div className='flex-1 flex flex-col gap-2'>
+                      <p className='font-bold'>{menu.name}</p>
+                      <p className='text-[0.8rem] text-slate-400'>{menu.content}</p>
+                      <p className='text-[0.8rem]'>리뷰 ({menu.reviewNum})</p>
+                      <p className='font-bold'>{(menu.price).toLocaleString()}<span className='font-normal'>원</span></p>
+                    </div>
+                    <div style={menuImgStyle(menu.picture)}/>
+                  </div>
+                ))}
+              </div>
+              <div className='bg-grey9 h-2' />
             </>
-
           )
-        })
-          
-        }
+        })}
       </div>
       <style jsx>{`
         .no-scroll {

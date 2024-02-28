@@ -1,12 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import 'lib/styles.css';
-import PrevPageX from '@/components/common/PrevPageX';
 import EmailLogin from '@/app/login/emailLogin/page';
 import { getNaverAuth, getKakaoAuth } from '@/services/loginAPI';
 import { useRouter } from 'next/navigation';
 
-const Login = () => {
+const LoginPage = () => {
   const router = useRouter();
   const [view, setView] = useState(0);
 
@@ -53,17 +52,16 @@ const Login = () => {
   }
 
   return(
-    <div className="w-full h-screen p-2 flex flex-col">
-      <PrevPageX />
-      <div className="w-full h-[50px] mt-10" style={yogiyoLogo} />
+    <div className="w-full h-screen pt-[100px] pb-[20px] px-6 flex flex-col gap-[10px]">
+      <div className="w-full h-[50px]" style={yogiyoLogo} />
       <p className="pt-3 text-center">로그인하고 다양한 혜택을 받아보세요!</p>
-      <div className="w-full p-4 mt-10 rounded-xl bg-kakao" onClick={handleAuth} id="kakao">
+      <div className="w-full p-4 rounded-xl bg-kakao" onClick={handleAuth} id="kakao">
         <p className="font-semibold text-center">카카오로 로그인</p>
       </div>
-      <div className="w-full p-4 mt-3 rounded-xl bg-naver" onClick={handleAuth} id="naver">
+      <div className="w-full p-4 rounded-xl bg-naver" onClick={handleAuth} id="naver">
         <p className="font-semibold text-white text-center">네이버로 로그인</p>
       </div>
-      <div className="w-full p-4 mt-3 rounded-xl bg-slate-200" onClick={handleEmailLogin}>
+      <div className="w-full p-4 rounded-xl bg-slate-200" onClick={handleEmailLogin}>
         <p className="font-semibold text-center">이메일로 로그인</p>
       </div>
       <div className="w-full p-4 rounded-xl border border-slate-300 mt-auto" onClick={handleEmailJoin}>
@@ -73,4 +71,4 @@ const Login = () => {
   )
 };
 
-export default Login;
+export default LoginPage;

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { currentCoord } from '@/recoil/state';
+import { currentCoord } from '@/recoil/address';
 import { useRecoilValue } from 'recoil';
 
 const KakaoMap = () => {

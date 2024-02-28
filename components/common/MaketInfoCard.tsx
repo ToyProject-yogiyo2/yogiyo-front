@@ -23,7 +23,6 @@ const basicStyled = {
 };
 
 const MarketInfoCard = ({ shop }: Props) => {
-  console.log(shop);
   return (
     <Link
       href={{

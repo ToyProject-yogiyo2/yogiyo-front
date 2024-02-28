@@ -3,12 +3,16 @@ import { useState, useEffect } from 'react';
 import {
   searchAddress,
   searchCoord,
-  isDetailMapState,
-  headerModalState,
   currentAddress,
   currentCoord,
   userAddress,
   thisAddressId,
+} from '@/recoil/address';
+import {
+  isDetailMapState,
+  headerModalState,
+} from '@/recoil/modal';
+import {
   userInfoAtom,
 } from '@/recoil/state';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -119,7 +123,7 @@ const DetailMap = () => {
         code: regionCode
       });
 
-      await fetchAddress(setMemberAddress, setThisAdd, userInfo);
+      await fetchAddress(setMemberAddress, setThisAdd);
     }
     setCurCoord(coord);
     setCurAdd(address);
@@ -194,7 +198,7 @@ const DetailMap = () => {
           />
         )}
         <span
-          className="cursor-pointer bg-yopink text-white font-black text-[1.2rem] rounded-xl p-[10px] text-center"
+          className="cursor-pointer bg-pink1 text-white font-black text-[1.2rem] rounded-xl p-[10px] text-center"
           onClick={() => {
             setIsDetail(false);
             setHeaderModal(false);

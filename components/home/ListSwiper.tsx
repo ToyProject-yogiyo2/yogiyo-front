@@ -9,8 +9,8 @@ import { useState, useEffect, useRef } from 'react';
 import type { Shop, RegisterAddressRequest } from '@/types/types';
 import { shopApi } from '@/services/shopApi';
 import { useRecoilValue } from 'recoil';
-import { currentCoord, currentRegionCode } from '@/recoil/state';
-import type { requestInfoType } from '@/types/types';
+import { currentCoord, currentRegionCode } from '@/recoil/address';
+import type { RequestInfoType } from '@/types/types';
 
 interface ListSwiperProps {
   thisAddress: RegisterAddressRequest;
@@ -32,7 +32,6 @@ const lastArrowStyle = {
 };
 
 const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperProps) => {
-  console.log(thisAddress)
   const [loading, setLoading] = useState(false);
 
   const regionCode = useRecoilValue(currentRegionCode)
@@ -52,7 +51,9 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
 
   const getShopList = async (cursor: number, subCursor: number) => {
     try {
-      const requestInfo: requestInfoType = {
+      console.log('세팅주소:' + thisAddress?.id)
+      console.log('현재좌표:' + regionCode)
+      const requestInfo: RequestInfoType = {
         category: '신규맛집',
         sortOption: 'ORDER',
         deliveryPrice: 3000,
@@ -102,12 +103,11 @@ const ListSwiper = ({ thisAddress, shopListData, setShopListData }: ListSwiperPr
         // 데이터가 더 이상 없을 경우 limit 상태를 true로 설정
         if (!data.hasNext) {
           setLimit(true);
-        } else { 
+        } else {
           setLimit(false);
         }
-      } else if(!thisAddress && (!regionCode && !curCoord)) {
-        // 비로그인 시 데이터가 없을 경우
-        setLimit(true)
+      } else {
+        setLimit(true);
       }
     } catch (error) {
       console.error(error);

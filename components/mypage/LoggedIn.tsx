@@ -16,7 +16,7 @@ const LoggedIn = () => {
         <div className="h-auto w-5/6">
           <p>
             <span className="font-bold text-xl">{user.nickname}</span>
-            <span className="ml-2 text-xs text-yopink rounded-xl pt-0.5 pb-0.5 pl-1.5 pr-1.5 border border-yopink ">
+            <span className="ml-2 text-xs text-pink1 rounded-xl pt-0.5 pb-0.5 pl-1.5 pr-1.5 border border-pink1 ">
               요기패스 구독중
             </span>
           </p>

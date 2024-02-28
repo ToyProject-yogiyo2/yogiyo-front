@@ -1,72 +1,5 @@
 import { atom } from 'recoil';
-import type { Coordinate, UserInfo, RegisterAddressRequest } from '@/types/types';
-
-//헤더모달 state
-export const headerModalState = atom({
-  key: 'headerModalState',
-  default: false,
-});
-
-// 현재위치
-export const currentCoord = atom<Coordinate | null>({
-  key: 'currentCoord',
-  default: null,
-});
-
-//현재위치 주소
-export const currentAddress = atom<string | any>({
-  key: 'currentAddress',
-  default: '',
-});
-
-//현재위치 법정동 코드
-export const currentRegionCode = atom<number | null>({
-  key: 'currentRegionCode',
-  default: null,
-})
-
-//검색위치
-export const searchCoord = atom<Coordinate | null>({
-  key: 'searchCoord',
-  default: null,
-});
-
-//검색주소
-export const searchAddress = atom({
-  key: 'searchAddress',
-  default: '',
-});
-
-//현재 세팅된 주소 정보
-export const thisAddressId = atom<RegisterAddressRequest>({
-  key: 'thisAddressId',
-  default: {
-    id: 0,
-    address: {
-      zipcode: '',
-      street: '',
-      detail: '',
-    },
-    here: false,
-    code: 0,
-    addressType: '',
-    nickname: '',
-    longitude: 0,
-    latitude: 0,
-  },
-});
-
-//상세정보 입력창 state
-export const isDetailMapState = atom({
-  key: 'isDetailMapState',
-  default: false,
-});
-
-//주소찾기 창 state
-export const isFindMapState = atom({
-  key: 'isFindMapState',
-  default: false,
-});
+import type { Menus, UserInfo } from '@/types/types';
 
 //로그인한 유저 정보
 export const userInfoAtom = atom<UserInfo>({
@@ -86,12 +19,6 @@ export const tokenAtom = atom({
   default: null,
 });
 
-//현재 유저 주소 정보
-export const userAddress = atom<RegisterAddressRequest[]>({
-  key: 'userAddress',
-  default: [],
-});
-
 //상점 조회 옵션
 export const shopListOption = atom({
   key: 'shopListOption',
@@ -102,4 +29,21 @@ export const shopListOption = atom({
   },
 });
 
-// 상점 리스트 조회 반환값
+//로딩 상태값
+export const loadingState = atom({
+  key: 'loadingState',
+  default: true
+})
+
+//상세 메뉴
+export const addMenu = atom<Menus>({
+  key: 'addMenu',
+  default: {
+    id: 0,
+    name: '',
+    content: '',
+    price: 0,
+    reviewNum: 0,
+    picture: ''
+  }
+})

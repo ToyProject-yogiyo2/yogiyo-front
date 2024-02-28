@@ -21,7 +21,7 @@ const isFirstRootHome = (pathname: string, currentPath: string) => {
 
 const Footer = () => {
   const footerList = ['홈', '찜', '검색', '주문내역', '마이요기요'];
-  const routerPath = ['/home', '/pick', '/search', '/order/list', '/mypage'];
+  const routerPath = ['/', '/pick', '/search', '/order/list', '/mypage'];
   const iconList = [BiHomeAlt, AiOutlineHeart, BiSearch, LuNewspaper, RiContactsLine];
   const pathname = usePathname();
   return (

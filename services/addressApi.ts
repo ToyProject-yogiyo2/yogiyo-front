@@ -5,7 +5,7 @@ export const addressApi = {
   // 멤버 주소 등록
   async register(data: RegisterAddressRequest) {
     try {
-      const response = await baseAxiosInstance.post('/address/register', data, {
+      const response = await baseAxiosInstance.post('/member/address/register', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -19,7 +19,7 @@ export const addressApi = {
   // 멤버 주소 조회
   async view() {
     try {
-      const response = await baseAxiosInstance.get('/address/view', {
+      const response = await baseAxiosInstance.get('/member/address/view', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -33,7 +33,7 @@ export const addressApi = {
   // 멤버 주소 삭제
   async delete(memberAddressId: number) {
     try {
-      const response = await baseAxiosInstance.delete(`/address/${memberAddressId}`, {
+      const response = await baseAxiosInstance.delete(`/member/address/${memberAddressId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -48,7 +48,7 @@ export const addressApi = {
   async change(memberAddressId: number) {
     try {
       const response = await baseAxiosInstance.patch(
-        `/address/here/${memberAddressId}`,
+        `/member/address/here/${memberAddressId}`,
         {},
         {
           headers: {
