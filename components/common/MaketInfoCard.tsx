@@ -47,7 +47,7 @@ const MarketInfoCard = ({ shop }: Props) => {
       </div>
       <div className="flex justify-start items-center gap-1">
         <AiFillStar fill="#FDC912" className="text-2xl" />
-        <p className="text-base font-bold">{shop.totalScore.toFixed(1) || '5.0'}</p>
+        <p className="text-base font-bold">{shop.totalScore?.toFixed(1) || '5.0'}</p>
       </div>
       <div className="text-sm">
         <p>{shop.deliveryTime || 0}분</p>

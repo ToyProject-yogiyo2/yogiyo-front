@@ -7,7 +7,7 @@ import {
 import {
   searchCoord,
   currentCoord,
-  currentAddress,
+  searchAddress,
 } from '@/recoil/address';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { MdArrowBackIosNew } from 'react-icons/md';
@@ -19,7 +19,7 @@ import { locationDecoder } from '@/lib/locationDecoder';
 const FindMap = () => {
   const coord = useRecoilValue(currentCoord);
   const setSearchCo = useSetRecoilState(searchCoord);
-  const [address, setAddress] = useRecoilState(currentAddress);
+  const [address, setAddress] = useRecoilState(searchAddress);
   const setIsDetail = useSetRecoilState(isDetailMapState);
   const setIsFindMap = useSetRecoilState(isFindMapState);
 
@@ -32,7 +32,7 @@ const FindMap = () => {
   useEffect(() => {
     if (!coord) return;
     const { kakao } = window;
-    kakao.maps?.load(() => {
+    kakao.maps?.load(async () => {
       let options = {
         center: new kakao.maps.LatLng(coord.lat, coord.lng),
         level: 3,
@@ -40,6 +40,10 @@ const FindMap = () => {
       const geocoder = new kakao.maps.services.Geocoder();
 
       let map = new kakao.maps.Map(mapRef.current, options);
+
+      // 초기 상태에서의 주소 변환 및 저장
+      const initialDecodedAddress: any = await locationDecoder(kakao, geocoder, coord);
+      setAddress(initialDecodedAddress);
 
       kakao.maps.event.addListener(map, 'dragend', async function () {
         //움직임 안내 문구 없애기

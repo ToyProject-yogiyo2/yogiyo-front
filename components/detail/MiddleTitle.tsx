@@ -15,24 +15,6 @@ interface Props {
 
 
 const MiddleTitle = ({shopInfo}: Props) => {
-  // const searchParams = useSearchParams();
-  // const shopId = searchParams.get('id');
-  // const [shopInfo, setShopInfo] = useState<shopInfoType>()
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await shopApi.getShopInfo(shopId);
-  //       console.log(result)
-  //       setShopInfo(result)
-  //     } catch (error) {
-  //       console.error('컴포넌트 내부 에러', error);
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, [])
-
-
   const [heart, setHeart] = useState(shopInfo?.isLike);
   const [likeNum, setLikeNum] = useState(shopInfo?.likeNum);
 
@@ -45,6 +27,7 @@ const MiddleTitle = ({shopInfo}: Props) => {
     text-slate-500
     font-bold
   `
+  console.log(shopInfo)
   return (
     <div className="">
       <div className="px-4 pt-4 relative">
@@ -86,18 +69,26 @@ const MiddleTitle = ({shopInfo}: Props) => {
           <ul className='flex flex-col gap-2 w-full'>
             <li className='flex gap-4'>
               <p className={listStyled}>배달정보</p>
+              {shopInfo?.deliveryTime ? 
               <div className='p-4 rounded-2xl bg-red-50 flex-1'>
                 <p className='text-red-500 text-[1.2rem] font-black'>
                   {(shopInfo?.deliveryTime) as number - 5}~{(shopInfo?.deliveryTime) as number + 5}분 <span className='text-[1rem]'>가게배달</span>
                 </p>
                 <p>{((shopInfo?.minDeliveryPrice || 1000).toLocaleString() || 0) + '원'}</p>
                 <p>요기패스는 배달비 무료</p>
-              </div>
+              </div> : 
+              <>
+                <span className='font-black'>배달 불가 지역</span>
+              </>
+            }
+
             </li>
             {/* <li className='flex gap-4'>
               <p className={listStyled}>할인혜택</p>
               <p className='text-red-500 font-bold'>15,000원 이상 주문 시 2,000원 할인</p>
             </li> */}
+            {shopInfo?.deliveryTime && 
+            <>
             <li className='flex gap-4'>
               <p className={listStyled}>최소주문</p>
               <p>{((shopInfo?.minOrderPrice || 1000).toLocaleString() || 0) + '원'}</p>
@@ -106,10 +97,11 @@ const MiddleTitle = ({shopInfo}: Props) => {
               <p className={listStyled}>가게위치</p>
               <p>{Math.floor((shopInfo?.distance || 1)/10000) + 'km'}</p>
             </li>
+            </>}
           </ul>
         </div>
         <Link
-          href={``}
+          href={`detail/info`}
           className="py-6 px-4 flex gap-2 items-center bg-slate-100 rounded-xl text-slate-600"
         >
           <HiOutlineSpeakerphone fontSize={'1.2rem'} />
@@ -119,13 +111,13 @@ const MiddleTitle = ({shopInfo}: Props) => {
       </div>
       <div className="py-2 px-4 flex gap-2">
         <Link
-          href=""
+          href={`detail/info`}
           className="rounded-xl border border-slate-400 py-3 flex-1 flex justify-center items-center"
         >
           리뷰 {shopInfo?.reviewNum}
         </Link>
         <Link
-          href=""
+          href={`detail/info`}
           className="rounded-xl border border-slate-400 py-3 flex-1 flex justify-center items-center"
         >
           가게 · 원산지 정보

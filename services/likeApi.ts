@@ -22,7 +22,6 @@ export const likeApi = {
         },
         params,
       });
-      console.log('찜하기api' + response)
       return response.data;
     } catch (error) {
       console.error('찜하기 목록 에러:', error);

@@ -31,7 +31,7 @@ const DetailHeader = ({shopInfo} : Props) => {
         isScrolled && 'bg-white'
       }`}
     >
-      <i className="p-[16px] cursor-pointer" onClick={() => router.back()}>
+      <i className="p-[16px] cursor-pointer" onClick={() => router.push('/')}>
         <SlArrowLeft
           style={
             isScrolled

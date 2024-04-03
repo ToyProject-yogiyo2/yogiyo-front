@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import PrevPageX from '@/components/common/PrevPageX';
 import { emailLogin } from '@/services/loginAPI';
 import { useState } from 'react';
+import { userInfoAtom } from '@/recoil/state';
+import { useSetRecoilState } from 'recoil';
 
 const EmailLogin = () => {
   const router = useRouter();
@@ -14,11 +16,26 @@ const EmailLogin = () => {
   const [password, setPassword] = useState('')
   //const [userData, setUserData] = useState()
 
+  // 로그인정보 세팅
+  const setUserInfo = useSetRecoilState(userInfoAtom);
+
   const handleEmailJoin = () => {
     router.push('/login/emailJoin')
   }
-  const handleEmailLogin = () => {
-    const emailLoginRes = emailLogin(email, password);
+  const handleEmailLogin = async () => {
+    const emailLoginRes = await emailLogin(email, password);
+
+    // 로그인 성공 했을 시, isLogin 세팅 및 루트페이지로 라우팅
+    if(emailLoginRes){
+      setUserInfo({
+        userId: emailLoginRes.userId,
+        nickname: 'unknown',
+        email: emailLoginRes.email,
+        phone: '01000000000',
+        isLogin: true,
+      })
+      router.push('/');
+    }
     console.log(emailLoginRes)
   }
 

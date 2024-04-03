@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userAddress } from '@/recoil/address';
 import { headerModalState, isDetailMapState, isFindMapState } from '@/recoil/modal';
@@ -10,6 +10,8 @@ import axios from 'axios';
 import DetailMap from './DetailMap';
 import FindMap from './FindMap';
 import UserAddressBtn from './addressModal/UserAddressBtn';
+import { BiHomeAlt } from 'react-icons/bi';
+import { BsBagDash } from 'react-icons/bs';
 
 export const arrowStyle = {
   position: 'absolute',
@@ -31,6 +33,12 @@ const AddressModal = () => {
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<string[]>([]);
+
+  // 집 추가 & 회사 추가 로 이동할 경우 상태값
+  const [directAdd, setDirectAdd] = useState('');
+
+  // 집 추가 & 회사 추가 상태값 초기화
+  useEffect(() => setDirectAdd('') , [])
 
   const searchIconStyle = {
     position: 'absolute',
@@ -60,6 +68,11 @@ const AddressModal = () => {
       setResults([]);
     }
   };
+
+  const addressAddDirect = (param: string) => {
+    setIsFocused(true), setHeight(true);
+    setDirectAdd(param);
+  }
 
   return (
     <>
@@ -92,6 +105,8 @@ const AddressModal = () => {
                     onClick={() => {
                       setQuery('');
                       setResults([]);
+                      setIsFocused(false);
+                      setDirectAdd('');
                     }}
                   />
                 )}
@@ -108,7 +123,10 @@ const AddressModal = () => {
                   onFocus={() => {
                     setIsFocused(true), setHeight(true);
                   }}
-                  onBlur={() => setIsFocused(false)}
+                  onBlur={() => {
+                    setIsFocused(false);
+                    setDirectAdd('');
+                  }}
                 />
               </form>
               {!query && (
@@ -122,14 +140,51 @@ const AddressModal = () => {
                   <div className="w-full h-[10px] bg-slate-200"></div>
                 </>
               )}
-              {!isFocused &&
-                !query &&
-                (memberAddress.length > 0
-                  ? memberAddress.map((addressTarget, i) => (
+              {/* 집과 회사만 */}
+              {
+                !isFocused && !query &&
+                (
+                  memberAddress.length > 0
+                  && memberAddress.filter(addTarget => addTarget.addressType === "HOME" || addTarget.addressType === "COMPANY")
+                  .map((addressTarget, i) => (
                       <UserAddressBtn key={i} addressTarget={addressTarget} />
-                    ))
-                  : // 나중에 집 추가 회사추가 등등 버튼 만들어야 함
-                    null)}
+                  ))
+                )
+              }
+              {/* 집 추가버튼 */}
+              {
+                !isFocused && !query &&
+                !memberAddress.find(addressTarget => addressTarget.addressType === "HOME") &&
+                <div 
+                  className="flex p-[20px]"
+                  onClick={() => addressAddDirect('HOME')}
+                >
+                  <div className='flex flex-1 gap-2 cursor-pointer'><BiHomeAlt style={{ fontSize: '1.5rem' }}/><span className="flex items-center gap-2 text-[1rem] font-bold">집 추가</span></div>
+                </div>
+              }
+              {/* 회사 추가버튼 */}
+              {
+                !isFocused && !query &&
+                !memberAddress.find(addressTarget => addressTarget.addressType === "COMPANY") &&
+                <div 
+                  className="flex p-[20px]"
+                  onClick={() => addressAddDirect('COMPANY')}
+                >
+                  <div className='flex flex-1 gap-2 cursor-pointer'><BsBagDash style={{ fontSize: '1.5rem' }}/><span className="flex items-center gap-2 text-[1rem] font-bold">회사 추가</span></div>
+                </div>
+              }
+              {!isFocused && !query && <div className="w-full h-[10px] bg-slate-200"></div>}
+              {/* 집과 회사 제외한 기타 주소만 */}
+              {
+                !isFocused && !query &&
+                (
+                  memberAddress.length > 0
+                  && memberAddress.filter(addTarget => addTarget.addressType !== "HOME" && addTarget.addressType !== "COMPANY")
+                  .map((addressTarget, i) => (
+                      <UserAddressBtn key={i} addressTarget={addressTarget} />
+                  ))
+                )
+              }
               {isFocused || query ? <SearchAddressList query={query} results={results} /> : null}
             </div>
           </>
@@ -137,7 +192,7 @@ const AddressModal = () => {
           <FindMap />
         )
       ) : (
-        <DetailMap />
+        <DetailMap directAdd={directAdd}/>
       )}
     </>
   );

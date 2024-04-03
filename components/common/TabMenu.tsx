@@ -4,27 +4,27 @@ import '/lib/animations.css';
 import { Tab } from '@/types/types';
 
 const TabMenu = (props: Tab) => {
-  //const [initialLoad, setInitialLoad] = useState(true);
-  //const [selectedTab, setSelectedTab] = useState(tabs[0].id);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [tabIndex, setTabIndex] = useState('default')
 
   useEffect(() => {
-    //console.log();
     console.log(`selectedTab: ${props.selectedTab}`);
-    console.log(`isInitialLoad: ${props.isInitialLoad}`);
   }, [props]);
 
   const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTab = e.target.value;
     props.handleGetSelected(selectedTab);
-    setIsInitialLoad(false);
+    setTabIndex(e.target.value);
   };
 
-  const tabAnimation = props.isInitialLoad
-    ? 'ml-0'
-    : props.selectedTab === 'left'
-    ? 'underline-animation-to-left'
-    : 'underline-animation-to-right';
+  const tabAnimation = () => {
+    if(tabIndex==='default'){
+      return 'bg-black h-[3px] w-1/2'
+    }else if(tabIndex==='left'){
+      return 'underline-animation-to-left bg-black h-[3px] w-1/2'
+    }else{
+      return 'underline-animation-to-right bg-black h-[3px] w-1/2'
+    }
+  }
 
   return (
     <div className="bg-grey1">
@@ -32,36 +32,36 @@ const TabMenu = (props: Tab) => {
         <div className="w-[50%]">
           <input
             type="radio"
-            id={props.tabData.left.id}
+            id='left'
             value="left"
             style={{ display: 'none' }}
             checked={props.selectedTab === 'left'}
             onChange={handleTabChange}
           />
-          <label htmlFor={props.tabData.left.id}>
+          <label htmlFor='left'>
             <p className={`text-center p-3 ${props.selectedTab === 'left' ? 'font-bold' : ''}`}>
-              {props.tabData.left.name}
+              {props.tabData.left}
             </p>
           </label>
         </div>
         <div className="w-[50%]">
           <input
             type="radio"
-            id={props.tabData.right.id}
+            id='right'
             value="right"
             style={{ display: 'none' }}
             checked={props.selectedTab === 'right'}
             onChange={handleTabChange}
           />
-          <label htmlFor="yomart">
+          <label htmlFor="right">
             <p className={`text-center p-3 ${props.selectedTab === 'right' ? 'font-bold' : ''}`}>
-              {props.tabData.right.name}
+              {props.tabData.right}
             </p>
           </label>
         </div>
       </div>
       <div className="pl-4 pr-4 border-b-2 border-slate-200">
-        <div className={`${tabAnimation} bg-black h-[3px] w-1/2`}></div>
+        <div className={tabAnimation()}></div>
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ const MaketDetailCard = ({ shop }: Props) => {
         </div>
         <div className="flex justify-start items-center gap-1">
           <AiFillStar fill="#FDC912" className="text-2xl" />
-          <p className="text-base font-bold">{shop.totalScore.toFixed(1)}</p>
+          <p className="text-base font-bold">{shop.totalScore?.toFixed(1)}</p>
         </div>
         <div className="text-sm flex gap-2">
           <p>{shop.deliveryTime}분</p>

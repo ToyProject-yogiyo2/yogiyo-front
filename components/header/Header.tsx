@@ -23,6 +23,10 @@ const Header = () => {
   const thisAdd = useRecoilValue(thisAddressId);
   const memberAddress = useRecoilValue(userAddress);
 
+  console.log(curAdd)
+  console.log(thisAdd)
+  console.log(memberAddress)
+  
   return (
     <header className="fixed gap-2 top-0 left-0 w-full h-[50px] flex justify-center items-center bg-white z-50">
       <p

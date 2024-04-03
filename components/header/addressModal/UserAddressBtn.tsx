@@ -6,6 +6,7 @@ import { headerModalState } from '@/recoil/modal';
 import { addressApi } from '@/services/addressApi';
 import { fetchAddress } from '@/lib/fetchAddress';
 import { FiMapPin } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 const UserAddressBtn = ({ addressTarget }: any) => {
   const setMemberAddress = useSetRecoilState(userAddress);
@@ -56,21 +57,29 @@ const UserAddressBtn = ({ addressTarget }: any) => {
           <span className="text-[0.9rem] text-slate-600">{fullAddress}</span>
         </div>
       </div>
-      {!addressTarget.here && (
+      {/* {!addressTarget.here && ( */}
         <i
           className="text-[2rem] relative cursor-pointer w-[1.3rem] h-[1.3rem] bg-slate-200 rounded-[50%]"
           onClick={async () => {
-            const isConfirm = confirm(`${addressTarget.nickname} 주소를 삭제하시겠어요?`);
-            if (isConfirm) {
-              await addressApi.delete(addressTarget.id);
-              await fetchAddress(setMemberAddress, setThisAdd);
-            }
+            Swal.fire({
+              title: `${addressTarget.nickname} 주소를 삭제하시겠어요?`,
+              showDenyButton: false,
+              showCancelButton: true,
+              confirmButtonText: "네",
+              cancelButtonText: "아니오",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                addressApi.delete(addressTarget.id);
+                fetchAddress(setMemberAddress, setThisAdd);
+                Swal.fire('삭제되었습니다.', '', 'success');
+              }
+            });
           }}
         >
           <div className="absolute w-[0.95rem] h-[1px] bg-slate-500 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
           <div className="absolute w-[0.95rem] h-[1px] bg-slate-500 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[135deg]"></div>
         </i>
-      )}
+      {/* )} */}
     </div>
   );
 };

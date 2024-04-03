@@ -17,8 +17,9 @@ const NewEateries = () => {
       </h2>
       <ListSwiper
         thisAddress={thisAddress}
-        shopListData={shopListData}
-        setShopListData={setShopListData}
+        // shopListData={shopListData}
+        // setShopListData={setShopListData}
+        kind={'newEateries'}
       />
     </div>
   );

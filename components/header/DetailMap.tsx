@@ -15,7 +15,7 @@ import {
 import {
   userInfoAtom,
 } from '@/recoil/state';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { GrUserManager } from 'react-icons/gr';
 import { arrowStyle } from './AddressModal';
@@ -24,7 +24,6 @@ import { BsBagDash } from 'react-icons/bs';
 import { FiMapPin } from 'react-icons/fi';
 import { addressApi } from '@/services/addressApi';
 import { fetchAddress } from '@/lib/fetchAddress';
-import { locationRegionCode } from '@/lib/locationRegionCode';
 
 export const mapIconStyle = {
   position: 'absolute',
@@ -44,7 +43,11 @@ const buttonIconStyle = {
   fontSize: '1.5rem',
 };
 
-const DetailMap = () => {
+interface Props {
+  directAdd: string;
+}
+
+const DetailMap = ({directAdd} : Props) => {
   //검색 좌표 및 주소
   const coord = useRecoilValue(searchCoord);
   const address = useRecoilValue(searchAddress);
@@ -54,7 +57,8 @@ const DetailMap = () => {
 
   //현재 좌표 및 주소
   const setCurCoord = useSetRecoilState(currentCoord);
-  const setCurAdd = useSetRecoilState(currentAddress);
+  const [curAdd, setCurAdd] = useRecoilState(currentAddress);
+  console.log(curAdd)
 
   //모달 상태
   const setHeaderModal = useSetRecoilState(headerModalState);
@@ -62,13 +66,13 @@ const DetailMap = () => {
 
   //fetch후 상태저장
   const setMemberAddress = useSetRecoilState(userAddress);
-  const setThisAdd = useSetRecoilState(thisAddressId);
+  const [thisAdd, setThisAdd] = useRecoilState(thisAddressId);
 
   //상세주소
   const [detailAddress, setDetailAddress] = useState('');
 
   //주소 별명
-  const [isAddressName, setIsAddressName] = useState('');
+  const [isAddressName, setIsAddressName] = useState(directAdd);
 
   //로그인 유저
   const userInfo = useRecoilValue(userInfoAtom);
@@ -100,31 +104,32 @@ const DetailMap = () => {
   }, [coord]);
 
   const setAddress = async () => {
-    //사용자가 주소를 저장하려는 경우
-    if (isAddressName) {
-      const selectAddressName = () => {
-        if (isAddressName === 'HOME') return '집';
-        if (isAddressName === 'COMPANY') return '회사';
-        if (isAddressName === 'ELSE') return '기타';
-        return isAddressName;
-      };
-      await addressApi.register({
-        here: true,
-        address: {
-          zipcode: '',
-          street: address,
-          detail: detailAddress,
-        },
-        nickname: selectAddressName(),
-        addressType:
-          isAddressName !== 'HOME' && isAddressName !== 'COMPANY' ? 'ELSE' : isAddressName,
-        longitude: coord?.lng || 0,
-        latitude: coord?.lat || 0,
-        code: regionCode
-      });
 
-      await fetchAddress(setMemberAddress, setThisAdd);
-    }
+    // 주소 타입 확인 (집/회사/기타/미지정)
+    // 미지정일 경우 주소타입은 주소 텍스트로 지정됨
+    const selectAddressName = () => {
+      if (isAddressName === 'HOME') return '집';
+      if (isAddressName === 'COMPANY') return '회사';
+      if (isAddressName === 'ELSE') return '기타';
+      if (!isAddressName) return address;
+      return isAddressName;
+    };
+    await addressApi.register({
+      here: true,
+      address: {
+        zipcode: '',
+        street: address,
+        detail: detailAddress,
+      },
+      nickname: selectAddressName(),
+      addressType:
+        isAddressName !== 'HOME' && isAddressName !== 'COMPANY' ? 'ELSE' : isAddressName,
+      longitude: coord?.lng || 0,
+      latitude: coord?.lat || 0,
+      code: regionCode
+    });
+
+    await fetchAddress(setMemberAddress, setThisAdd);
     setCurCoord(coord);
     setCurAdd(address);
   };

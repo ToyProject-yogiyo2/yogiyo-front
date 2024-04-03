@@ -1,18 +1,29 @@
 import { GoX } from 'react-icons/go';
 import { useRouter } from 'next/navigation';
 
-const PrevPageX = () => {
+interface Props {
+  size?: string
+}
+const PrevPageX = (props :Props) => {
   const router = useRouter();
-  //const back = router.back;
 
+  const setSize = () => {
+    if(props.size){
+      return {fontSize: props.size}
+    }else{
+      return {fontSize: '2rem'}
+    }
+  }
+
+  const size = setSize()
   const handleX = () => {
     router.back();
   };
 
   return (
-    <>
-      <GoX className="text-[2rem]" onClick={handleX} />
-    </>
+    <div className='ml-[-3px]'>
+      <GoX style={size} onClick={handleX} />
+    </div>
   );
 };
 

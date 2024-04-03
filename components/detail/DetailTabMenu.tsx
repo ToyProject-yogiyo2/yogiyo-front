@@ -5,12 +5,12 @@ import type { ShopInfoType, MenuGroupType } from '@/types/types';
 import MenuSlider from './MenuSlider';
 import { RiArrowDownSLine } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { foodModalState } from '@/recoil/modal';
-import { addMenu } from '@/recoil/state';
 
 interface Props {
-  shopInfo?: ShopInfoType
+  shopInfo?: ShopInfoType,
+  handleThisMenu: (param: number) => void;
 }
 
 const menuImgStyle = (url: string) => {
@@ -33,7 +33,7 @@ const menuImgStyle = (url: string) => {
   }
 }
 
-const DetailTabMenu = ({shopInfo}: Props) => {
+const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
 
   // 테스트용 메뉴그룹 더미데이터
   const dummyData = new Array(10).fill('').map((_, i) => {
@@ -56,9 +56,6 @@ const DetailTabMenu = ({shopInfo}: Props) => {
 
   //음식 상세페이지 모달 state
   const [isModal, setIsModal] = useRecoilState(foodModalState);
-
-  //모달에 전달할 메뉴
-  const setAddMenu = useSetRecoilState(addMenu);
 
   //실제 api로 받아올 메뉴그룹데이터
   const [menuGroups, setMenuGroups] = useState<MenuGroupType[]>([]);
@@ -106,7 +103,7 @@ const DetailTabMenu = ({shopInfo}: Props) => {
       if(shopInfo){
         try {
           const result = await shopApi.getShopMenuGroup(shopInfo?.id)
-          setMenuGroups(result.dummyData)
+          setMenuGroups(result)
           console.log(result)
         } catch (error) {
           console.error('컴포넌트 에러', error);
@@ -253,7 +250,7 @@ const DetailTabMenu = ({shopInfo}: Props) => {
                   className='absolute top-[0%] left-[50%]'
                 />
                 <p className='text-[1.3rem] font-bold py-2'>대표메뉴</p>
-                <MenuSlider menus={menuGroup.menus} shopId={shopInfo?.id}/>
+                <MenuSlider menus={menuGroup.menus} shopId={shopInfo?.id} handleThisMenu={handleThisMenu}/>
               </div>
             )
           }
@@ -274,7 +271,7 @@ const DetailTabMenu = ({shopInfo}: Props) => {
                     className='flex gap-4 py-[20px] border-b'
                     onClick={() => {
                       setIsModal(true);
-                      setAddMenu(menu);
+                      handleThisMenu(menu.id)
                     }}
                   >
                     <div className='flex-1 flex flex-col gap-2'>
