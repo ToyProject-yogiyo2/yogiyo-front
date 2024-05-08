@@ -39,6 +39,21 @@ const Detail = () => {
     setThisMenu(param)
   }
 
+  // 스크롤이벤트 처리
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = () => {
+    const position = window.scrollY;
+    setIsScrolled(position > 200);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   // 주문 
   const [order, setOrder] = useRecoilState(orderAtom);
 
@@ -90,7 +105,7 @@ const Detail = () => {
 
   return (
     <div className="">
-      <DetailHeader shopInfo={shopInfo} />
+      <DetailHeader shopInfo={shopInfo} isScrolled={isScrolled} />
       <div className={`w-full h-[200px]`} style={bannerStyle}/>
       <MiddleTitle shopInfo={shopInfo} />
       <div className='border-y-[4px] border-grey9' />

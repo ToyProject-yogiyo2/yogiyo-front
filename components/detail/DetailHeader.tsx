@@ -6,24 +6,12 @@ import type { ShopInfoType } from '@/types/types';
 
 interface Props {
   shopInfo?: ShopInfoType
+  isScrolled: boolean
 }
 
 
-const DetailHeader = ({shopInfo} : Props) => {
+const DetailHeader = ({shopInfo, isScrolled} : Props) => {
   const router = useRouter();
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const handleScroll = () => {
-    const position = window.scrollY;
-    setIsScrolled(position > 200);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
     <div
@@ -31,7 +19,8 @@ const DetailHeader = ({shopInfo} : Props) => {
         isScrolled && 'bg-white'
       }`}
     >
-      <i className="p-[16px] cursor-pointer" onClick={() => router.push('/')}>
+      {/* <i className="p-[16px] cursor-pointer" onClick={() => router.push('/')}> */}
+      <i className="p-[16px] cursor-pointer" onClick={() => router.back()}>
         <SlArrowLeft
           style={
             isScrolled
