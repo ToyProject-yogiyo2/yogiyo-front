@@ -309,3 +309,9 @@ export interface IDsInOrder {
   shopId: number,
   shopName: string,
 }
+
+export interface ShopNotice {
+  title: string,
+  notice: string,
+  images: string[]
+}

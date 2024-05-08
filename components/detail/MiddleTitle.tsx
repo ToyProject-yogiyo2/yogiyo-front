@@ -101,7 +101,10 @@ const MiddleTitle = ({shopInfo}: Props) => {
           </ul>
         </div>
         <Link
-          href={`detail/info`}
+          href={{
+            pathname: `detail/info`,
+            query: {id: shopInfo?.id}
+          }}
           className="py-6 px-4 flex gap-2 items-center bg-slate-100 rounded-xl text-slate-600"
         >
           <HiOutlineSpeakerphone fontSize={'1.2rem'} />
@@ -117,7 +120,10 @@ const MiddleTitle = ({shopInfo}: Props) => {
           리뷰 {shopInfo?.reviewNum}
         </Link>
         <Link
-          href={`detail/info`}
+          href={{
+            pathname: `detail/info`,
+            query: {id: shopInfo?.id}
+          }}
           className="rounded-xl border border-slate-400 py-3 flex-1 flex justify-center items-center"
         >
           가게 · 원산지 정보
