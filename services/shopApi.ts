@@ -66,4 +66,18 @@ export const shopApi = {
       console.error(error);
     }
   },
+
+  // 사장님 공지 조회
+  async getShopNotice(shopId: number) {
+    try {
+      const response = await baseAxiosInstance.get(`/owner/shop/${shopId}/notice`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
