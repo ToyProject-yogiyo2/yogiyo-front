@@ -1,17 +1,63 @@
 'use client';
 import { AiFillStar, AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { likeApi } from '@/services/likeApi';
+import { shopApi } from '@/services/shopApi';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { currentCoord, currentRegionCode, thisAddressId } from '@/recoil/address';
+import { foodModalState } from '@/recoil/modal';
+import { userInfoAtom } from '@/recoil/state';
+import type { ShopInfoType } from '@/types/types';
 
-const MarketCard = ({ info }: any) => {
+const MarketCard = ({ info, shopId }: any) => {
   const [heart, setHeart] = useState(true);
+  const [shopInfo, setShopInfo] = useState<ShopInfoType>()
+
+  // 로그인 유무
+  const userInfo = useRecoilValue(userInfoAtom);
+  // 현재위치 법정동 코드
+  const curRegionCode = useRecoilValue(currentRegionCode);
+  // 로그인 시 세팅된 주소
+  const thisAddId = useRecoilValue(thisAddressId);
+  // 현재 접속된 좌표값
+  const curCoord = useRecoilValue(currentCoord);
+
 
   const heartStyle = {
     fontSize: '2rem',
     cursor: 'pointer',
     fill: heart ? 'red' : 'black',
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if(shopId){
+        const param = {
+          shopId: shopId,
+          code: 0,
+          latitude: 0,
+          longitude: 0
+        }
+        // 로그인했을 경우                            
+        if(userInfo.isLogin){
+          param.code = thisAddId.code || (curRegionCode || 0)
+          param.latitude = thisAddId.latitude
+          param.longitude = thisAddId.longitude
+        // 비로그인일 경우
+        }else{
+          param.code = curRegionCode || 0
+          param.latitude = curCoord?.lat || 0
+          param.longitude = curCoord?.lng || 0
+        }
+        const result = await shopApi.getShopInfo(param);
+        setShopInfo(result)
+      }
+
+    };
+  
+    fetchData();
+  }, [shopId])
 
   const heartHandler = (shopId: number) => {
     setHeart(!heart);

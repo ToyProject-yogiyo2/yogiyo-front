@@ -3,7 +3,7 @@ import DetailHeader from '@/components/detail/DetailHeader';
 import MiddleTitle from '@/components/detail/MiddleTitle';
 import DetailTabMenu from '@/components/detail/DetailTabMenu';
 import { useSearchParams } from 'next/navigation';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { currentCoord, currentRegionCode, thisAddressId } from '@/recoil/address';
 import { foodModalState } from '@/recoil/modal';
 import { userInfoAtom } from '@/recoil/state';
@@ -14,6 +14,7 @@ import ScrollToTop from '@/components/common/ScrollToTop';
 import FoodDetail from '@/components/detail/foodDetail/FoodDetail';
 import { orderAtom } from '@/recoil/order';
 import { useRouter } from 'next/navigation';
+import { recentlyViewedShopsState } from '@/recoil/state';
 
 const Detail = () => {
   const searchParams = useSearchParams();
@@ -102,6 +103,27 @@ const Detail = () => {
       address: thisAddId.address,
     })
   }
+
+  const setRecentlyViewedShops = useSetRecoilState(recentlyViewedShopsState);
+
+  useEffect(() => {
+    if (shopId) {
+      // 로컬 스토리지에서 기존 최근 본 맛집 리스트 가져오기
+      const existingShops = JSON.parse(localStorage.getItem('recentlyViewedShops') || '[]');
+
+      // 현재 shopId가 이미 리스트에 있는지 확인
+      if (!existingShops.includes(shopId)) {
+        // 리스트 앞부분에 현재 shopId 추가
+        const updatedShops = [shopId, ...existingShops.slice(0, 9)];
+
+        // 로컬 스토리지에 업데이트된 리스트 저장
+        localStorage.setItem('recentlyViewedShops', JSON.stringify(updatedShops));
+
+        // Recoil 상태 업데이트
+        setRecentlyViewedShops(updatedShops);
+      }
+    }
+  }, [shopId]);
 
   return (
     <div className="">

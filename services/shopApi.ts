@@ -41,7 +41,7 @@ export const shopApi = {
           'Content-Type': 'application/json',
         }
       });
-      return response.data;
+      return response.data.menuGroups;
     } catch (error) {
       console.error(error);
     }
