@@ -12,7 +12,7 @@ import type { ShopInfoType } from '@/types/types';
 
 const MarketCard = ({ info, shopId }: any) => {
   const [heart, setHeart] = useState(true);
-  const [shopInfo, setShopInfo] = useState<ShopInfoType>()
+  const [shopInfo, setShopInfo] = useState<any>(info)
 
   // 로그인 유무
   const userInfo = useRecoilValue(userInfoAtom);
@@ -69,19 +69,19 @@ const MarketCard = ({ info, shopId }: any) => {
       <Link href={{
         pathname: '/detail',
         query: {
-          id: info.shopId
+          id: shopId ? shopInfo?.id : shopInfo?.shopId
         },
       }} className="flex flex-1 gap-4">
         <div className="w-[90px] h-[90px] rounded-xl bg-slate-300">
-          <img src={info.shopImg} />
+          <img src={shopId ? shopInfo?.banner : shopInfo?.shopImg} />
         </div>
         <div className="flex flex-col justify-center gap-2 flex-1">
           <div className="title_container flex justify-start gap-2 rounded-md">
-            <p className="text-xl font-bold">{info.shopName || '가게 이름'}</p>
+            <p className="text-xl font-bold">{shopId ? shopInfo?.name : shopInfo?.shopName || '가게 이름'}</p>
           </div>
           <div className="flex justify-start items-center gap-1">
             <AiFillStar fill="#FDC912" className="text-2xl" />
-            <p className="text-base font-bold">{info.score || '5.0'}</p>
+            <p className="text-base font-bold">{shopId ? shopInfo?.totalScore : shopInfo?.score || '5.0'}</p>
           </div>
         </div>
       </Link>
