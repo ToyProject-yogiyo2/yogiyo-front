@@ -103,7 +103,12 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
       if(shopInfo){
         try {
           const result = await shopApi.getShopMenuGroup(shopInfo?.id)
-          setMenuGroups(result)
+          // 받아온 메뉴그룹 데이터가 없을 경우 더미데이터 사용
+          if(result.length === 0){
+            setMenuGroups(dummyData)
+          }else{
+            setMenuGroups(result)
+          }
           console.log(result)
         } catch (error) {
           console.error('컴포넌트 에러', error);
@@ -118,7 +123,7 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
   useEffect(() => {
     //메뉴그룹 순회한 후 각 Ref의 위치값 저장
     let positions: number[] = []
-    dummyData.forEach((menuGroup) => {
+    menuGroups.forEach((menuGroup) => {
       const name = menuGroup.name
       const sectionScroll = sectionRefs.current[name].getBoundingClientRect().top;
       positions.push(sectionScroll);
@@ -137,12 +142,12 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
           const currentScrollPosition = window.scrollY + 150;
           positions.forEach((_, i) => {
             if(currentScrollPosition >= positions[i] && currentScrollPosition <= positions[i+1]){
-              setActiveMenu(dummyData[i].name);
-              handleGrandchildScroll(dummyData[i].name)
+              setActiveMenu(menuGroups[i].name);
+              handleGrandchildScroll(menuGroups[i].name)
             }else if(positions.length - 1 === i && currentScrollPosition >= positions[i]){
               // 마지막 요소일 떄
-              setActiveMenu(dummyData[i].name);
-              handleGrandchildScroll(dummyData[i].name)
+              setActiveMenu(menuGroups[i].name);
+              handleGrandchildScroll(menuGroups[i].name)
             }
           })
           clearTimeout(timeoutId as NodeJS.Timeout);
@@ -170,7 +175,7 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
     console.log(offsetTop)
     setIsFullMenu(!isFullMenu)
   }
-
+  console.log(menuGroups)
   return (
     <div className='' ref={totalRef}>
       {/* 탭메뉴 영역 */}
@@ -179,7 +184,7 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
           ref={childRef}
           className="no-scroll top-0 left-0 overflow-x-auto h-[30px] flex px-[20px] items-center gap-4 text-sm absoulte bg-white"
         >
-          {dummyData?.map((menuGroup, i) => (
+          {menuGroups?.map((menuGroup, i) => (
             <p
               ref={el => {if(el) grandChildRef.current[menuGroup?.name] = el;}} 
               className={`flex text-[1rem] items-center whitespace-nowrap cursor-pointer p-[5px] ${
@@ -216,7 +221,7 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
           />
         </p>
         <div className='flex flex-wrap gap-3 bg-grey9 p-[10px] pb-[20px]'>
-        {dummyData?.map((menuGroup, i) => (
+        {menuGroups?.map((menuGroup, i) => (
           <span 
             key={i}
             className={`p-[7px] rounded-3xl 
@@ -237,7 +242,7 @@ const DetailTabMenu = ({shopInfo, handleThisMenu}: Props) => {
 
       {/* 메뉴 리스트 영역 */}
       <div>
-        {dummyData.map((menuGroup, i) => {
+        {menuGroups.map((menuGroup, i) => {
           // 대표메뉴일 경우
           if(i === 0){
             return (

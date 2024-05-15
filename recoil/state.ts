@@ -34,3 +34,9 @@ export const loadingState = atom({
   key: 'loadingState',
   default: true
 })
+
+//최근 본 맛집
+export const recentlyViewedShopsState = atom<string[]>({
+  key: 'recentlyViewedShopsState',
+  default: [],
+});
