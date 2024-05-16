@@ -33,6 +33,9 @@ const Detail = () => {
   // 현재 접속된 좌표값
   const curCoord = useRecoilValue(currentCoord);
 
+  // 상점상세페이지 열었을 때 최근 본 맛집 db 저장용
+  const setRecentlyViewedShops = useSetRecoilState(recentlyViewedShopsState);
+
   //열린 메뉴
   const [thisMenu, setThisMenu] = useState(0);
 
@@ -104,7 +107,6 @@ const Detail = () => {
     })
   }
 
-  const setRecentlyViewedShops = useSetRecoilState(recentlyViewedShopsState);
 
   useEffect(() => {
     if (shopId) {

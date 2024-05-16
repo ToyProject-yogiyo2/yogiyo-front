@@ -27,6 +27,11 @@ const Pick = () => {
     setExistingShops(result);
   }, [])
 
+  const handleRemove = (shopId: string) => {
+    const updatedShops = existingShops.filter((id) => id !== shopId);
+    setExistingShops(updatedShops);
+  };
+
   return (
     <div className="flex flex-col w-full bg-slate-200">
       <h2 className="fixed gap-2 top-0 left-0 w-full h-[50px] flex justify-center items-center bg-white z-50 text-[1.25rem] font-bold">
@@ -42,7 +47,7 @@ const Pick = () => {
         <span className="text-[1.2rem] font-bold">최근 본 맛집</span>
         <span>{existingShops.length || 0}개</span>
       </div>
-      <PickMarketDetailList existingShops={existingShops}/>
+      <PickMarketDetailList existingShops={existingShops} onRemove={handleRemove}/>
       <div className="h-[70px]" />
       <Footer />
     </div>

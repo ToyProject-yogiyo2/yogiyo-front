@@ -4,14 +4,19 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { likeApi } from '@/services/likeApi';
 import { shopApi } from '@/services/shopApi';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { currentCoord, currentRegionCode, thisAddressId } from '@/recoil/address';
-import { foodModalState } from '@/recoil/modal';
 import { userInfoAtom } from '@/recoil/state';
-import type { ShopInfoType } from '@/types/types';
+import { recentlyViewedShopsState } from '@/recoil/state';
 
-const MarketCard = ({ info, shopId }: any) => {
-  const [heart, setHeart] = useState(true);
+interface Props {
+  info?: any;
+  shopId?: string;
+  onRemove?: (shopId: string) => void;
+}
+
+const MarketCard = ({ info, shopId, onRemove }: Props) => {
+  const [heart, setHeart] = useState(info ? true : false);
   const [shopInfo, setShopInfo] = useState<any>(info)
 
   // 로그인 유무
@@ -23,6 +28,7 @@ const MarketCard = ({ info, shopId }: any) => {
   // 현재 접속된 좌표값
   const curCoord = useRecoilValue(currentCoord);
 
+  const [recentlyViewedShops, setRecentlyViewedShops] = useRecoilState(recentlyViewedShopsState);
 
   const heartStyle = {
     fontSize: '2rem',
@@ -53,9 +59,7 @@ const MarketCard = ({ info, shopId }: any) => {
         const result = await shopApi.getShopInfo(param);
         setShopInfo(result)
       }
-
     };
-  
     fetchData();
   }, [shopId])
 
@@ -63,6 +67,14 @@ const MarketCard = ({ info, shopId }: any) => {
     setHeart(!heart);
     likeApi.toggleLike(shopId)
   };
+  
+  const removeFromRecentlyViewed = (shopId: number) => {
+    const updatedShops = recentlyViewedShops.filter((id: string) => id !== shopId.toString());
+    localStorage.setItem('recentlyViewedShops', JSON.stringify(updatedShops));
+    setRecentlyViewedShops(updatedShops);
+    onRemove && onRemove(shopId.toString());
+  };
+
 
   return (
     <div className="mt-[20px] ml-[20px] mr-[20px] pb-[20px] border-b border-slate-200 flex gap-4">
@@ -73,7 +85,7 @@ const MarketCard = ({ info, shopId }: any) => {
         },
       }} className="flex flex-1 gap-4">
         <div className="w-[90px] h-[90px] rounded-xl bg-slate-300">
-          <img src={shopId ? shopInfo?.banner : shopInfo?.shopImg} />
+          <img src={shopId ? '/images/yogiyo-logo.jpg' : shopInfo?.shopImg} />
         </div>
         <div className="flex flex-col justify-center gap-2 flex-1">
           <div className="title_container flex justify-start gap-2 rounded-md">
@@ -87,17 +99,20 @@ const MarketCard = ({ info, shopId }: any) => {
       </Link>
       <div className="flex flex-col justify-around">
         {/* 최근 본 맛집 X버튼 */}
-        {/* {!pick && (
-          <i className="text-[2rem] relative cursor-pointer w-full h-[1.4rem]">
+        {shopId && (
+          <i 
+            className="text-[2rem] relative cursor-pointer w-full h-[1.4rem]"
+            onClick={() => removeFromRecentlyViewed(shopId ? shopInfo.id : shopInfo.shopId)}
+          >
             <div className="absolute w-[1.4rem] h-[1px] bg-slate-600 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
             <div className="absolute w-[1.4rem] h-[1px] bg-slate-600 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[135deg]"></div>
           </i>
-        )} */}
+        )}
         <>
           {heart ? (
-            <AiFillHeart style={heartStyle} onClick={() => heartHandler(info.shopId)} />
+            <AiFillHeart style={heartStyle} onClick={() => heartHandler(shopId ? shopInfo.id : shopInfo.shopId)} />
           ) : (
-            <AiOutlineHeart style={heartStyle} onClick={() => heartHandler(info.shopId)} />
+            <AiOutlineHeart style={heartStyle} onClick={() => heartHandler(shopId ? shopInfo.id : shopInfo.shopId)} />
           )}
         </>
       </div>
